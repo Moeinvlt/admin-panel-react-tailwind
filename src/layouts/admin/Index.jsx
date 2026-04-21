@@ -4,7 +4,7 @@ import Sidebar from "./sidebar";
 
 const AdminLayout = () => {
     return (
-        <div className=" h-screen">
+        <div className="h-screen">
             <Navbar/>
             <Sidebar/>
             <Content/>

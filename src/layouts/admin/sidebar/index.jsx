@@ -34,8 +34,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`${isSidebarOpen ? "w-60" : "w-14"} 
-      transition-all duration-200 fixed right-0 top-0 pb-18 h-full border-l border-border-light dark:border-border-dark bg-white dark:bg-gray-800 overflow-hidden`}
+      className={`${isSidebarOpen ? "w-60" : "w-14"} transition-all duration-200 fixed z-50 right-0 top-0 pb-18 h-full border-l border-border-light dark:border-border-dark bg-white dark:bg-gray-800 overflow-hidden`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

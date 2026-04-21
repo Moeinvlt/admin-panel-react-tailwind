@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AdminContext } from "../../../context/AdminContextContainer";
 import Dashboard from "../../../pages/dashboard/Dashboard";
+import Category from "../../../pages/category/Category";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -11,7 +12,8 @@ const Content = () => {
         sidebarOpen ? "pr-60" : "pr-14"
       } transition-all duration-150`}
     >
-      <Dashboard />
+      {/* <Dashboard /> */}
+      <Category/>
     </main>
   );
 };
