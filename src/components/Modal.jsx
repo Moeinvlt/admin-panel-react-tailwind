@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { AdminContext } from "../context/AdminContextContainer";
 import { HiX } from "react-icons/hi";
 
-const Modal = ({ children, fullScreen=true }) => {
+const Modal = ({ children, fullScreen=true, title }) => {
   const { modalOpen, setModalOpen } = useContext(AdminContext);
 
   return createPortal(
@@ -20,9 +20,9 @@ const Modal = ({ children, fullScreen=true }) => {
         }
         `}
     >
-      <div className={`${fullScreen ? "w-full h-full" : "w-auto h-auto"}  customBox flex flex-col`}>
+      <div className={`${fullScreen ? "w-full h-full" : "w-auto h-auto mx-3"}  customBox flex flex-col`}>
         <div className="w-full flex justify-between p-4 border-b border-border-light dark:border-border-dark">
-          <h4 className="defaultText text-[18px]">افزودن دسته محصولات</h4>
+          <h4 className="defaultText text-[18px]">{title}</h4>
 
           <button
             type="button"
@@ -33,8 +33,10 @@ const Modal = ({ children, fullScreen=true }) => {
           </button>
         </div>
 
-        <div className={`w-full h-full flex justify-center items-center px-6`}>
+        <div className="h-full px-6 overflow-y-auto custom-scroll">
+          <div className="mx-auto max-w-[429.13px]">
             {children}
+          </div>
         </div>
 
         <div className="border-t border-border-light dark:border-border-dark w-full flex justify-end p-2">

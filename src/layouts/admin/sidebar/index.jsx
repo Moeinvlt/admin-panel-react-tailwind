@@ -49,7 +49,7 @@ const Sidebar = () => {
       </div>
 
       <div className="h-full">
-        <ul className="h-full overflow-y-auto sidebar-scroll">
+        <ul className="h-full overflow-y-auto custom-scroll">
           <SidebarItem title="داشبورد" icon={<FaTachometerAlt />} />
 
           {/* tlte */}

@@ -50,11 +50,12 @@
 }
 
 @layer utilities {
-  .sidebar-scroll::-webkit-scrollbar {
+  .custom-scroll::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
     background-color: inherit;
   }
-  .sidebar-scroll::-webkit-scrollbar-thumb {
+  .custom-scroll::-webkit-scrollbar-thumb {
     background: #c8cacc86;
     border-radius: 8px;
   }
