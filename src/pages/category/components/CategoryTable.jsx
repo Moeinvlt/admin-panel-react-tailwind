@@ -39,6 +39,24 @@ const CategoryTable = () => {
       like_count: "2",
       status: "1",
     },
+    {
+      id: "5",
+      category: "222",
+      title: "lalalaaa",
+      price: "22222",
+      stock: "7",
+      like_count: "2",
+      status: "1",
+    },
+    {
+      id: "5",
+      category: "222",
+      title: "lalalaaa",
+      price: "22222",
+      stock: "7",
+      like_count: "2",
+      status: "1",
+    },
   ];
 
   const dataInfo = [
@@ -57,6 +75,7 @@ const CategoryTable = () => {
       data={data}
       dataInfo={dataInfo}
       additionalField={additionalField}
+      limit={5}
     />
   );
 };
