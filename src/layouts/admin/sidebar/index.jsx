@@ -50,51 +50,51 @@ const Sidebar = () => {
 
       <div className="h-full">
         <ul className="h-full overflow-y-auto custom-scroll">
-          <SidebarItem title="داشبورد" icon={<FaTachometerAlt />} />
+          <SidebarItem title="داشبورد" path="/" icon={<FaTachometerAlt />} />
 
           {/* tlte */}
           <SidebarGroupTitle title="فروشگاه" isSidebarOpen={isSidebarOpen}/>
           {/* tlte */}
 
-          <SidebarItem title="مدیریت گروه محصول" icon={<FaStream />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت گروه محصول" path="/category" icon={<FaStream />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="مدیریت محصول" icon={<FaCube />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت محصول" path="/product" icon={<FaCube />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="مدیریت برند ها" icon={<FaCopyright />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت برند ها" path="/brands" icon={<FaCopyright />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="مدیریت گارانتی ها" icon={<FaPagelines />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت گارانتی ها" path="/" icon={<FaPagelines />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="مدیریت رنگ ها" icon={<FaPalette />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت رنگ ها" path="/" icon={<FaPalette />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="مدیریت تخفیف ها" icon={<FaPercentage />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت تخفیف ها" path="/" icon={<FaPercentage />} isSidebarOpen={isSidebarOpen}/>
 
           {/* tlte */}
           <SidebarGroupTitle title="سفارشات و سبد" isSidebarOpen={isSidebarOpen}/>
           {/* tlte */}
 
-          <SidebarItem title="مدیریت سبد ها" icon={<FaShoppingBasket />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت سبد ها" path="/" icon={<FaShoppingBasket />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="مدیریت سفارشات" icon={<FaLuggageCart />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت سفارشات" path="/" icon={<FaLuggageCart />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="مدیریت نحوه ارسال" icon={<FaTruckLoading isSidebarOpen={isSidebarOpen}/>} />
+          <SidebarItem title="مدیریت نحوه ارسال" path="/" icon={<FaTruckLoading isSidebarOpen={isSidebarOpen}/>} />
 
           {/* tlte */}
           <SidebarGroupTitle title="کاربران و همکاران" isSidebarOpen={isSidebarOpen}/>
           {/* tlte */}
 
-          <SidebarItem title="مشاهده کاربران" icon={<FaUsers />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مشاهده کاربران" path="/" icon={<FaUsers />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="نقش ها" icon={<FaUserTag />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="نقش ها" path="/" icon={<FaUserTag />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="مجوز ها" icon={<FaShieldAlt />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مجوز ها" path="/" icon={<FaShieldAlt />} isSidebarOpen={isSidebarOpen}/>
 
           {/* tlte */}
           <SidebarGroupTitle title="ارتباتاط" isSidebarOpen={isSidebarOpen}/>
           {/* tlte */}
 
-          <SidebarItem title="سوال ها" icon={<FaQuestionCircle />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="سوال ها" path="/" icon={<FaQuestionCircle />} isSidebarOpen={isSidebarOpen}/>
 
-          <SidebarItem title="نظرات" icon={<FaComment />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="نظرات" path="/" icon={<FaComment />} isSidebarOpen={isSidebarOpen}/>
         </ul>
       </div>
     </aside>

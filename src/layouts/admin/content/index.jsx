@@ -4,6 +4,7 @@ import Dashboard from "../../../pages/dashboard/Dashboard";
 import Category from "../../../pages/category/Category";
 import Product from "../../../pages/product/Product";
 import Brands from "../../../pages/brands/Brands";
+import { Route, Routes } from "react-router";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -14,10 +15,12 @@ const Content = () => {
         sidebarOpen ? "pr-60" : "pr-14"
       } transition-all duration-150`}
     >
-      {/* <Dashboard /> */}
-      <Category/>
-      {/* <Product/> */}
-      {/* <Brands/> */}
+      <Routes>
+        <Route path="/" element={<Dashboard />}/>
+        <Route path="/category" element={<Category/>}/>
+        <Route path="/product" element={<Product/>}/>
+        <Route path="/brands" element={<Brands/> }/>
+      </Routes>
     </main>
   );
 };

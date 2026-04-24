@@ -32,6 +32,10 @@
     @apply text-[#61748f] dark:text-[#9a9da1] text-[0.85rem] py-2 hover:text-sky-400 dark:hover:text-white hover:bg-sky-50 dark:hover:bg-gray-700 flex items-center gap-3 pr-4;
   }
 
+  .sidebarItem.active {
+    @apply text-sky-400 dark:text-white bg-sky-50 dark:bg-gray-700;
+  }
+
   .defaultText {
     @apply text-light-text dark:text-dark-text;
   }
@@ -43,10 +47,6 @@
   .customBox {
     @apply border border-border-light dark:border-border-dark rounded-custom-radius shadow-custom-shadow bg-white dark:bg-custom-dark;
   }
-
-  /* .nthColor {
-    @apply nth-[1]:bg-[#589bff] nth-[2]:bg-[#af6ded];
-  } */
 }
 
 @layer utilities {

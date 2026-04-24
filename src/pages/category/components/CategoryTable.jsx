@@ -67,7 +67,7 @@ const CategoryTable = () => {
 
   const additionalField = {
     title: "عملیات",
-    elements: () => <Actions />,
+    elements: (itemId) => <Actions itemId={itemId} />,
   };
 
   return (

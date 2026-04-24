@@ -56,7 +56,7 @@ const DataTable = ({ data, dataInfo, additionalField, limit=5 }) => {
 
                 {additionalField && (
                   <td className="py-3 text-center">
-                    {additionalField.elements()}
+                    {additionalField.elements(d.id)}
                   </td>
                 )}
               </tr>
