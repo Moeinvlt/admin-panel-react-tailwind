@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import logoImg from "../../../assets/images/reactIcon.png";
 import SidebarGroupTitle from "./components/SidebarGroupTitle";
 import SidebarItem from "./components/SidebarItem";
@@ -20,10 +20,13 @@ import { FaComment } from "react-icons/fa";
 import { AdminContext } from "../../../context/AdminContextContainer";
 
 const Sidebar = () => {
-  const { sidebarOpen } = useContext(AdminContext);
-  const [isHover, setIsHover] = useState(false);
+  // const { sidebarOpen } = useContext(AdminContext);
+  const { setIsHover } = useContext(AdminContext);
 
-  const isSidebarOpen = sidebarOpen || isHover;
+  const { isSidebarOpen } = useContext(AdminContext);
+  // const [isHover, setIsHover] = useState(false);
+
+  // const isSidebarOpen = sidebarOpen || isHover;
 
   const handleMouseEnter = () => {
     setIsHover(true);
@@ -53,48 +56,48 @@ const Sidebar = () => {
           <SidebarItem title="داشبورد" path="/" icon={<FaTachometerAlt />} />
 
           {/* tlte */}
-          <SidebarGroupTitle title="فروشگاه" isSidebarOpen={isSidebarOpen}/>
+          <SidebarGroupTitle title="فروشگاه" />
           {/* tlte */}
 
-          <SidebarItem title="مدیریت گروه محصول" path="/category" icon={<FaStream />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت گروه محصول" path="/category" icon={<FaStream />} />
 
-          <SidebarItem title="مدیریت محصول" path="/product" icon={<FaCube />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت محصول" path="/product" icon={<FaCube />} />
 
-          <SidebarItem title="مدیریت برند ها" path="/brands" icon={<FaCopyright />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت برند ها" path="/brands" icon={<FaCopyright />} />
 
-          <SidebarItem title="مدیریت گارانتی ها" path="/" icon={<FaPagelines />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت گارانتی ها" path="/" icon={<FaPagelines />} />
 
-          <SidebarItem title="مدیریت رنگ ها" path="/" icon={<FaPalette />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت رنگ ها" path="/" icon={<FaPalette />} />
 
-          <SidebarItem title="مدیریت تخفیف ها" path="/" icon={<FaPercentage />} isSidebarOpen={isSidebarOpen}/>
-
-          {/* tlte */}
-          <SidebarGroupTitle title="سفارشات و سبد" isSidebarOpen={isSidebarOpen}/>
-          {/* tlte */}
-
-          <SidebarItem title="مدیریت سبد ها" path="/" icon={<FaShoppingBasket />} isSidebarOpen={isSidebarOpen}/>
-
-          <SidebarItem title="مدیریت سفارشات" path="/" icon={<FaLuggageCart />} isSidebarOpen={isSidebarOpen}/>
-
-          <SidebarItem title="مدیریت نحوه ارسال" path="/" icon={<FaTruckLoading isSidebarOpen={isSidebarOpen}/>} />
+          <SidebarItem title="مدیریت تخفیف ها" path="/" icon={<FaPercentage />} />
 
           {/* tlte */}
-          <SidebarGroupTitle title="کاربران و همکاران" isSidebarOpen={isSidebarOpen}/>
+          <SidebarGroupTitle title="سفارشات و سبد" />
           {/* tlte */}
 
-          <SidebarItem title="مشاهده کاربران" path="/" icon={<FaUsers />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت سبد ها" path="/" icon={<FaShoppingBasket />} />
 
-          <SidebarItem title="نقش ها" path="/" icon={<FaUserTag />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت سفارشات" path="/" icon={<FaLuggageCart />} />
 
-          <SidebarItem title="مجوز ها" path="/" icon={<FaShieldAlt />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مدیریت نحوه ارسال" path="/" icon={<FaTruckLoading />} />
 
           {/* tlte */}
-          <SidebarGroupTitle title="ارتباتاط" isSidebarOpen={isSidebarOpen}/>
+          <SidebarGroupTitle title="کاربران و همکاران" />
           {/* tlte */}
 
-          <SidebarItem title="سوال ها" path="/" icon={<FaQuestionCircle />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="مشاهده کاربران" path="/" icon={<FaUsers />} />
 
-          <SidebarItem title="نظرات" path="/" icon={<FaComment />} isSidebarOpen={isSidebarOpen}/>
+          <SidebarItem title="نقش ها" path="/" icon={<FaUserTag />} />
+
+          <SidebarItem title="مجوز ها" path="/" icon={<FaShieldAlt />} />
+
+          {/* tlte */}
+          <SidebarGroupTitle title="ارتباتاط" />
+          {/* tlte */}
+
+          <SidebarItem title="سوال ها" path="/" icon={<FaQuestionCircle />} />
+
+          <SidebarItem title="نظرات" path="/" icon={<FaComment />} />
         </ul>
       </div>
     </aside>
