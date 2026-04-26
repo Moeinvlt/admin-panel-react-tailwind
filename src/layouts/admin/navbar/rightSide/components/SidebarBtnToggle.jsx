@@ -4,7 +4,7 @@ import { AdminContext } from "../../../../../context/AdminContextContainer";
 import { HiX } from "react-icons/hi";
 
 const SidebarBtnToggle = () => {
-  const {sidebarOpen, setSidebarOpen} = useContext(AdminContext);
+  const { sidebarOpen, setSidebarOpen } = useContext(AdminContext);
 
   return (
     <button

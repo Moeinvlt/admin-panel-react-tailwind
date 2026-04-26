@@ -5,6 +5,9 @@ import Category from "../../../pages/category/Category";
 import Product from "../../../pages/product/Product";
 import Brands from "../../../pages/brands/Brands";
 import { Route, Routes } from "react-router";
+import Guarantees from "../../../pages/guarantees/Guarantees";
+import Colors from "../../../pages/colors/Colors";
+import Discounts from "../../../pages/discounts/Discounts";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -20,6 +23,9 @@ const Content = () => {
         <Route path="/category" element={<Category/>}/>
         <Route path="/product" element={<Product/>}/>
         <Route path="/brands" element={<Brands/> }/>
+        <Route path="/guarantees" element={<Guarantees/> }/>
+        <Route path="/colors" element={<Colors/> }/>
+        <Route path="/discounts" element={<Discounts/> }/>
       </Routes>
     </main>
   );

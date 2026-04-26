@@ -20,13 +20,8 @@ import { FaComment } from "react-icons/fa";
 import { AdminContext } from "../../../context/AdminContextContainer";
 
 const Sidebar = () => {
-  // const { sidebarOpen } = useContext(AdminContext);
   const { setIsHover } = useContext(AdminContext);
-
   const { isSidebarOpen } = useContext(AdminContext);
-  // const [isHover, setIsHover] = useState(false);
-
-  // const isSidebarOpen = sidebarOpen || isHover;
 
   const handleMouseEnter = () => {
     setIsHover(true);
@@ -65,11 +60,11 @@ const Sidebar = () => {
 
           <SidebarItem title="مدیریت برند ها" path="/brands" icon={<FaCopyright />} />
 
-          <SidebarItem title="مدیریت گارانتی ها" path="/" icon={<FaPagelines />} />
+          <SidebarItem title="مدیریت گارانتی ها" path="/guarantees" icon={<FaPagelines />} />
 
-          <SidebarItem title="مدیریت رنگ ها" path="/" icon={<FaPalette />} />
+          <SidebarItem title="مدیریت رنگ ها" path="/colors" icon={<FaPalette />} />
 
-          <SidebarItem title="مدیریت تخفیف ها" path="/" icon={<FaPercentage />} />
+          <SidebarItem title="مدیریت تخفیف ها" path="/discounts" icon={<FaPercentage />} />
 
           {/* tlte */}
           <SidebarGroupTitle title="سفارشات و سبد" />
