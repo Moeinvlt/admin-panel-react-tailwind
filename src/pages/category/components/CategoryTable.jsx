@@ -72,6 +72,7 @@ const CategoryTable = () => {
 
   return (
     <DataTable
+      title="مدیریت دسته بندی محصول"
       data={data}
       dataInfo={dataInfo}
       additionalField={additionalField}

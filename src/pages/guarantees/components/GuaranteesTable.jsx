@@ -72,6 +72,7 @@ const GuaranteesTable = () => {
 
   return (
     <DataTable
+      title="مدیریت گارانتی ها"
       data={data}
       dataInfo={dataInfo}
       limit={5}

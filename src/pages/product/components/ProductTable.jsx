@@ -77,6 +77,7 @@ const ProductTable = () => {
 
   return (
     <DataTable 
+      title="مدیریت محصول"
       data={data}
       dataInfo={dataInfo}
       additionalField={additionalField}

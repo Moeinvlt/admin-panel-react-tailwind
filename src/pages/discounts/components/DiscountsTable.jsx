@@ -51,7 +51,7 @@ const DiscountsTable = () => {
     {
       id: "5",
       category: "222",
-      title: "lalalaaa",
+      title: "maowwwww",
       price: "22222",
       stock: "7",
       like_count: "2",
@@ -72,6 +72,7 @@ const DiscountsTable = () => {
 
   return (
     <DataTable
+    title="مدیریت تخفیف ها"
       data={data}
       dataInfo={dataInfo}
       limit={5}

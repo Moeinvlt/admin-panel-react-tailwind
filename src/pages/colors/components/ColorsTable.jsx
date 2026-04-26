@@ -72,6 +72,7 @@ const ColorsTable = () => {
 
   return (
     <DataTable
+      title="مدیریت رنگ ها"
       data={data}
       dataInfo={dataInfo}
       limit={5}

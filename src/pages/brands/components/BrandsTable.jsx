@@ -77,6 +77,7 @@ const BrandsTable = () => {
 
   return (
       <DataTable 
+        title="مدیریت برند ها"
         data={data}
         dataInfo={dataInfo}
         limit={5}
