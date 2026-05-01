@@ -1,9 +1,11 @@
 import AdminLayout from "./layouts/admin";
+import AuthLayout from "./layouts/authLayout/AuthLayout";
 
 function App() {
   return (
     <>
-      <AdminLayout />
+      <AuthLayout/>
+      {/* <AdminLayout /> */}
     </>
   );
 }

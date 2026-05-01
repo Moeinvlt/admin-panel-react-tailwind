@@ -64,10 +64,13 @@
     box-shadow: 0px 4px 16px rgba(118, 200, 254, 0.03);
   }
 
-  .nthColor > i:nth-child(1) {
-    background-color: blueviolet;
+  .formShadow {
+    box-shadow: 1px 5px 2px rgb(94, 93, 93);
   }
-  .nthColor > i:nth-child(2) {
-    background-color: #8484ff;
+  .formAvatarShadow {
+    box-shadow: 1px 6px 4px rgba(94, 93, 93, 0.5);
+  }
+  .formBtnShadow {
+    box-shadow: 1px 4.5px 2px #942a00;
   }
 }

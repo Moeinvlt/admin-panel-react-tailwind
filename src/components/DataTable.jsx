@@ -69,9 +69,15 @@ const DataTable = ({ data, dataInfo, additionalField, limit = 5, title }) => {
       </div>
 
       {paginatedData.length === 0 ? (
-        <div role="alert" className="bg-red-500/60 text-black p-4 rounded-md text-[20px] flex items-center justify-center gap-1.5"> <MdWarning className="text-red-500 text-[22px]"/>نتیجه ای یافت نشد </div>
+        <div
+          role="alert"
+          className="bg-red-500/60 text-black p-4 rounded-md text-[20px] flex items-center justify-center gap-1.5"
+        >
+          {" "}
+          <MdWarning className="text-red-500 text-[22px]" />
+          نتیجه ای یافت نشد{" "}
+        </div>
       ) : (
-
         <div className="w-full">
           <div className="overflow-x-auto customBox w-full">
             <table className="w-full text-sm text-nowrap min-w-175">
@@ -125,18 +131,20 @@ const DataTable = ({ data, dataInfo, additionalField, limit = 5, title }) => {
                 <FaAngleRight />
               </button>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  type="button"
-                  key={page}
-                  onClick={() => goToPage(page)}
-                  className={`cursor-pointer border-2 border-gray-500 text-gray-500 dark:text-white ${
-                    currentPage === page ? "bg-sky-500/80" : ""
-                  } w-8 h-8 flex justify-center items-center rounded-md`}
-                >
-                  {page}
-                </button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    type="button"
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    className={`cursor-pointer border-2 border-gray-500 text-gray-500 dark:text-white ${
+                      currentPage === page ? "bg-sky-500/80" : ""
+                    } w-8 h-8 flex justify-center items-center rounded-md`}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
 
               <button
                 type="button"
