@@ -4,8 +4,12 @@ import { MdLock } from "react-icons/md";
 import { MdArrowBack } from "react-icons/md";
 import Input from "../../components/auth/Input";
 import { Form, Formik } from "formik";
-import AuthFormikControl from "./AuthFormikControl";
 import * as Yup from "yup";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import AuthSubmitBtn from "../../components/auth/AuthSubmitBtn";
+import { Toasty } from "../../utils/customToast";
+import AuthFormikControl from "../../components/auth/AuthFormikControl";
 
 const initialValues = {
   phone: "",
@@ -13,7 +17,26 @@ const initialValues = {
   remember: false,
 };
 
-const onSubmit = () => {
+const onSubmit = (values, submitMethods, navigate) => {
+  axios
+    .post("https://ecomadminapi.azhadev.ir/api/auth/login", {
+      ...values,
+      remember: values.remember ? 1 : 0,
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        localStorage.setItem("loginToken", JSON.stringify(res.data));
+        navigate("/");
+        Toasty("ورود با موفقیت انجام شد", "success");
+      } else {
+        Toasty(res.data.message, "error");
+      }
+      submitMethods.setSubmitting(false);
+    })
+    .catch((error) => {
+      submitMethods.setSubmitting(false);
+      Toasty("خطای سمت سرور", "error");
+    });
 };
 
 const validationSchema = Yup.object({
@@ -25,15 +48,19 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full h-screen bg-[#2d2e2d] flex flex-col gap-10 items-center justify-center">
-      <div className="relative w-82.5 min-h-90 bg-amber-50 rounded-xl formShadow px-8.5">
+      <div className="relative w-82.5 min-h-90 bg-amber-50 rounded-xl formShadow px-8.5 pb-6">
         <div className="bg-[#942a00] w-30 rounded-full border-7 border-[#e03f00] formAvatarShadow mx-auto mt-6">
           <img src={formImage} alt="image" className="w-full rounded-full" />
         </div>
         <Formik
           initialValues={initialValues}
-          onSubmit={onSubmit()}
+          onSubmit={(values, submitMethods) =>
+            onSubmit(values, submitMethods, navigate)
+          }
           validationSchema={validationSchema}
         >
           <Form>
@@ -63,14 +90,7 @@ const Login = () => {
               name="remember"
             />
 
-            <div className="absolute bottom-0 translate-y-1/2  w-full right-0 flex justify-center">
-              <button
-                type="submit"
-                className="flex items-center justify-center bg-[#e03f00] formBtnShadow text-white w-40 py-2 rounded-full cursor-pointer"
-              >
-                <MdArrowBack /> ورود
-              </button>
-            </div>
+            <AuthSubmitBtn />
           </Form>
         </Formik>
       </div>

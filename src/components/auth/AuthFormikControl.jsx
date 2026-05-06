@@ -1,4 +1,4 @@
-import Input from "../../components/auth/Input";
+import Input from "./Input";
 import Chekbox from "./Checkbox";
 
 const AuthFormikControl = (props) => {

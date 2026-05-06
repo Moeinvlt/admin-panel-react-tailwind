@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router";
 import Guarantees from "../../../pages/guarantees/Guarantees";
 import Colors from "../../../pages/colors/Colors";
 import Discounts from "../../../pages/discounts/Discounts";
+import Logout from "../../../pages/auth/Logout";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -26,6 +27,8 @@ const Content = () => {
         <Route path="/guarantees" element={<Guarantees/> }/>
         <Route path="/colors" element={<Colors/> }/>
         <Route path="/discounts" element={<Discounts/> }/>
+
+        <Route path="/logout" element={<Logout/> }/>
       </Routes>
     </main>
   );
