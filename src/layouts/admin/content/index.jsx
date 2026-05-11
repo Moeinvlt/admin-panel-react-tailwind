@@ -4,11 +4,12 @@ import Dashboard from "../../../pages/dashboard/Dashboard";
 import Category from "../../../pages/category/Category";
 import Product from "../../../pages/product/Product";
 import Brands from "../../../pages/brands/Brands";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import Guarantees from "../../../pages/guarantees/Guarantees";
 import Colors from "../../../pages/colors/Colors";
 import Discounts from "../../../pages/discounts/Discounts";
 import Logout from "../../../pages/auth/Logout";
+import NotFoundPage from "../../../components/NotFoundPage";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -20,15 +21,17 @@ const Content = () => {
       } transition-all duration-150`}
     >
       <Routes>
-        <Route path="/" element={<Dashboard />}/>
-        <Route path="/category" element={<Category/>}/>
-        <Route path="/product" element={<Product/>}/>
-        <Route path="/brands" element={<Brands/> }/>
-        <Route path="/guarantees" element={<Guarantees/> }/>
-        <Route path="/colors" element={<Colors/> }/>
-        <Route path="/discounts" element={<Discounts/> }/>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/category" element={<Category />} />
+        <Route path="/product" element={<Product />} />
+        <Route path="/brands" element={<Brands />} />
+        <Route path="/guarantees" element={<Guarantees />} />
+        <Route path="/colors" element={<Colors />} />
+        <Route path="/discounts" element={<Discounts />} />
 
-        <Route path="/logout" element={<Logout/> }/>
+        <Route path="/logout" element={<Logout />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
+        <Route path="/404" element={<NotFoundPage />} />
       </Routes>
     </main>
   );

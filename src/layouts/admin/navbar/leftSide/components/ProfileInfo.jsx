@@ -36,7 +36,6 @@ const ProfileInfo = ({ isOpen, onClose }) => {
     if (result.isConfirmed) {
       navigate("/logout");
     }
-
   };
 
   return (
