@@ -5,11 +5,11 @@ import { MdArrowBack } from "react-icons/md";
 import Input from "../../components/auth/Input";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { useNavigate } from "react-router";
 import AuthSubmitBtn from "../../components/auth/AuthSubmitBtn";
 import { Toasty } from "../../utils/customToast";
 import AuthFormikControl from "../../components/auth/AuthFormikControl";
+import { loginApi } from "../../api/auth/auth";
 
 const initialValues = {
   phone: "",
@@ -17,26 +17,22 @@ const initialValues = {
   remember: false,
 };
 
-const onSubmit = (values, submitMethods, navigate) => {
-  axios
-    .post("https://ecomadminapi.azhadev.ir/api/auth/login", {
-      ...values,
-      remember: values.remember ? 1 : 0,
-    })
-    .then((res) => {
-      if (res.status === 200) {
-        localStorage.setItem("loginToken", JSON.stringify(res.data));
-        navigate("/");
-        Toasty("ورود با موفقیت انجام شد", "success");
-      } else {
-        Toasty(res.data.message, "error");
-      }
-      submitMethods.setSubmitting(false);
-    })
-    .catch((error) => {
-      submitMethods.setSubmitting(false);
-      Toasty("خطای سمت سرور", "error");
-    });
+const onSubmit = async (values, submitMethods, navigate) => {
+  const res = await loginApi(values);
+
+  try {
+    if (res.status === 200) {
+      localStorage.setItem("loginToken", JSON.stringify(res.data));
+      navigate("/");
+      Toasty("ورود با موفقیت انجام شد", "success");
+    } else {
+      Toasty(res.data.message, "error");
+    }
+    submitMethods.setSubmitting(false);
+  } catch (error) {
+    submitMethods.setSubmitting(false);
+    Toasty("خطای سمت سرور", "error");
+  }
 };
 
 const validationSchema = Yup.object({

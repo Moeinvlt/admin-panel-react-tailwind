@@ -10,10 +10,10 @@ const defaultOptions = {
 }
 
 export const Toasty = (message, type = 'default', customOptions = {}) => {
-  // ترکیب تنظیمات (تنظیمات سفارشی، اولویت بالاتری دارند)
+
   const finalOptions = { ...defaultOptions, ...customOptions };
 
-  // انتخاب متد مناسب بر اساس نوع پیام
+
   switch (type) {
     case 'success':
       toast.success(message, finalOptions);
