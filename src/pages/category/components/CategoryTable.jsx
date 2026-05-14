@@ -5,6 +5,7 @@ import DataTable from "../../../components/DataTable";
 import { Toasty } from "../../../utils/customToast";
 import Actions from "./Actions";
 import ShowInMenue from "./tableAdditions/ShowInMenu";
+import { convertToDateToJalali } from "../../../utils/convertDate";
 
 const CategoryTable = () => {
   const [data, setData] = useState([]);
@@ -40,10 +41,13 @@ const CategoryTable = () => {
     { field: "id", title: "#" },
     { field: "title", title: "عنوان دسته" },
     { field: "parent_id", title: "والد" },
-    { field: "created_at", title: "تاریخ" },
   ];
 
   const additionalField = [
+    {
+      title: "تاریخ",
+      elements: (rowData) => convertToDateToJalali(rowData.created_at),
+    },
     {
       title: "نمایش در منو",
       elements: (rowData) => <ShowInMenue rowData={rowData} />,

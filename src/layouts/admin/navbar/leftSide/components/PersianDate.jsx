@@ -1,21 +1,19 @@
-import moment from "moment-jalaali";
+import jMoment from "jalali-moment";
 import { useEffect, useState } from "react";
+import { convertToDateToJalali } from "../../../../../utils/convertDate";
 
 const ParsianDate = () => {
-    const [date, setDate] = useState('');
+  const [date, setDate] = useState("");
 
-    useEffect(() => {
-        let m = moment();
+  useEffect(() => {
+    setDate(convertToDateToJalali());
+  }, []);
 
-        let formattedDate = m.format("DD / MM / jYYYY");
-        setDate(formattedDate);
-    }, []);
-
-    return (
-        <li className="h-full flex items-center pl-4 dark:text-dark-rgb">
-            {date}
-        </li>
-    );
+  return (
+    <li className="h-full flex items-center pl-4 dark:text-dark-rgb">
+      {date || "در حال بارگذاری..."}
+    </li>
+  );
 };
 
 export default ParsianDate;
