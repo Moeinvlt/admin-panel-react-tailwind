@@ -2,8 +2,19 @@ import { useEffect, useMemo, useState } from "react";
 import { FaAngleLeft, FaAngleRight, FaSearch, FaTrash } from "react-icons/fa";
 import { MdWarning } from "react-icons/md";
 import ModalToggleBtn from "./ModalToggleBtn";
+import { Toasty } from "../utils/customToast";
+import TableLoading from "./loading/TableLoading";
+import { FaExclamationTriangle } from "react-icons/fa";
 
-const DataTable = ({ data, dataInfo, additionalField, limit = 5, title }) => {
+const DataTable = ({
+  data,
+  dataInfo,
+  additionalField,
+  limit = 5,
+  title,
+  isLoading,
+  error,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -22,7 +33,7 @@ const DataTable = ({ data, dataInfo, additionalField, limit = 5, title }) => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm]);
+  }, [searchTerm, data]);
 
   const paginatedData = useMemo(() => {
     const start = (currentPage - 1) * limit;
@@ -68,7 +79,16 @@ const DataTable = ({ data, dataInfo, additionalField, limit = 5, title }) => {
         </div>
       </div>
 
-      {paginatedData.length === 0 ? (
+      {isLoading ? (
+        <TableLoading />
+      ) : error ? (
+        <div
+          role="alert"
+          className="bg-red-500/70 text-white p-4 rounded-md text-center"
+        >
+         <FaExclamationTriangle className="inline-block text-amber-300"/> خطایی رخ داده است. لطفاً مجدداً تلاش کنید. 
+        </div>
+      ) : paginatedData.length === 0 ? (
         <div
           role="alert"
           className="bg-red-500/60 text-black p-4 rounded-md text-[20px] flex items-center justify-center gap-1.5"
@@ -89,11 +109,15 @@ const DataTable = ({ data, dataInfo, additionalField, limit = 5, title }) => {
                     </th>
                   ))}
 
-                  {additionalField ? (
-                    <th className="py-3 px-2 defaultText">
-                      {additionalField.title}
-                    </th>
-                  ) : null}
+                  {Array.isArray(additionalField) &&
+                    additionalField.map((a, index) => (
+                      <th
+                        key={`add-col-${index}`}
+                        className="py-3 px-2 defaultText"
+                      >
+                        {a.title}
+                      </th>
+                    ))}
                 </tr>
               </thead>
 
@@ -109,11 +133,15 @@ const DataTable = ({ data, dataInfo, additionalField, limit = 5, title }) => {
                       </td>
                     ))}
 
-                    {additionalField && (
-                      <td className="py-3 text-center">
-                        {additionalField.elements(d.id)}
-                      </td>
-                    )}
+                    {Array.isArray(additionalField) &&
+                      additionalField.map((a, index) => (
+                        <td
+                          key={`add-cell-${index}-${d.id}`}
+                          className="py-3 px-2 defaultText text-center"
+                        >
+                          {a.elements(d)}
+                        </td>
+                      ))}
                   </tr>
                 ))}
               </tbody>

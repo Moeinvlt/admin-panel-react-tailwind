@@ -1,83 +1,72 @@
+import { useEffect, useState } from "react";
+import { Outlet, useParams } from "react-router";
+import { getCategoriesApi } from "../../../api/category/categoryApi";
 import DataTable from "../../../components/DataTable";
+import { Toasty } from "../../../utils/customToast";
 import Actions from "./Actions";
+import ShowInMenue from "./tableAdditions/ShowInMenu";
 
 const CategoryTable = () => {
-  const data = [
-    {
-      id: "1",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "2",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "3",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "4",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "5",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "5",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-  ];
+  const [data, setData] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const { categoryId } = useParams();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setError(false);
+      setLoading(true);
+      try {
+        const res = await getCategoriesApi(categoryId);
+        if (res.status === 200) {
+          setData(res.data.data || []);
+        } else {
+          Toasty(res.data?.message || "خطا در دریافت داده ها", "error");
+          setError(true);
+        }
+      } catch (error) {
+        Toasty(error.message || "خطای شبکه یا سرور", "error");
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, [categoryId]);
 
   const dataInfo = [
     { field: "id", title: "#" },
-    { field: "title", title: "عنوان محصول" },
-    { field: "price", title: "قیمت محصول" },
+    { field: "title", title: "عنوان دسته" },
+    { field: "parent_id", title: "والد" },
+    { field: "created_at", title: "تاریخ" },
   ];
 
-  const additionalField = {
-    title: "عملیات",
-    elements: (itemId) => <Actions itemId={itemId} />,
-  };
+  const additionalField = [
+    {
+      title: "نمایش در منو",
+      elements: (rowData) => <ShowInMenue rowData={rowData} />,
+    },
+    {
+      title: "عملیات",
+      elements: (rowData) => <Actions rowData={rowData} />,
+    },
+  ];
 
   return (
-    <DataTable
-      title="مدیریت دسته بندی محصول"
-      data={data}
-      dataInfo={dataInfo}
-      additionalField={additionalField}
-      limit={5}
-    />
+    <>
+      <Outlet />
+      <DataTable
+        title="مدیریت دسته بندی محصول"
+        data={data}
+        dataInfo={dataInfo}
+        additionalField={additionalField}
+        limit={5}
+        isLoading={loading}
+        error={error}
+      />
+    </>
   );
 };
 

@@ -54,7 +54,7 @@ const Sidebar = () => {
           <SidebarGroupTitle title="فروشگاه" />
           {/* tlte */}
 
-          <SidebarItem title="مدیریت گروه محصول" path="/category" icon={<FaStream />} />
+          <SidebarItem title="مدیریت گروه محصول" path="/categories" icon={<FaStream />} />
 
           <SidebarItem title="مدیریت محصول" path="/product" icon={<FaCube />} />
 

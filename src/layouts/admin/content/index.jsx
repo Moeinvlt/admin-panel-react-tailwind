@@ -10,6 +10,7 @@ import Colors from "../../../pages/colors/Colors";
 import Discounts from "../../../pages/discounts/Discounts";
 import Logout from "../../../pages/auth/Logout";
 import NotFoundPage from "../../../components/NotFoundPage";
+import CategoryChildren from "../../../pages/category/components/CategoryChildren";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -22,7 +23,9 @@ const Content = () => {
     >
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/category" element={<Category />} />
+        <Route path="/categories" element={<Category />}>
+          <Route path=":categoryId" element={<CategoryChildren/>}/>
+        </Route>
         <Route path="/product" element={<Product />} />
         <Route path="/brands" element={<Brands />} />
         <Route path="/guarantees" element={<Guarantees />} />
