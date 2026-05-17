@@ -1,41 +1,14 @@
-import { useEffect, useState } from "react";
 import { Outlet, useParams } from "react-router";
-import { getCategoriesApi } from "../../../api/category/categoryApi";
 import DataTable from "../../../components/DataTable";
 import { Toasty } from "../../../utils/customToast";
 import Actions from "./Actions";
 import ShowInMenue from "./tableAdditions/ShowInMenu";
 import { convertToDateToJalali } from "../../../utils/convertDate";
+import { useGetCategories } from "../../../api/category/hooks/useCategories";
 
 const CategoryTable = () => {
-  const [data, setData] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
   const { categoryId } = useParams();
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setError(false);
-      setLoading(true);
-      try {
-        const res = await getCategoriesApi(categoryId);
-        if (res.status === 200) {
-          setData(res.data.data || []);
-        } else {
-          Toasty(res.data?.message || "خطا در دریافت داده ها", "error");
-          setError(true);
-        }
-      } catch (error) {
-        Toasty(error.message || "خطای شبکه یا سرور", "error");
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCategories();
-  }, [categoryId]);
+  const { data, loading, error } = useGetCategories(categoryId);
 
   const dataInfo = [
     { field: "id", title: "#" },

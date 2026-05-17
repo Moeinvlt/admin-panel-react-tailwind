@@ -1,91 +1,72 @@
 import { FaCheck } from "react-icons/fa";
 import Modal from "../../../components/Modal";
+import { Form, Formik } from "formik";
+import FormikControl from "../../../components/form/FormikControl";
+import SubmitBtn from "../../../components/form/SubmitBtn";
+import { Toasty } from "../../../utils/customToast";
+import { initialValues, onSubmit, validationSchema } from "../core";
+import { useParentsCategory } from "../../../api/category/hooks/useParentsCategory";
 
 const AddCategory = () => {
-  return (
-    <Modal
-    fullScreen={true}
-    title="افزودن دسته محصول"
-    >
-      <div>
-        <form>
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-              دسته والد
-            </span>
-            <select
-              name=""
-              className="w-full defaultText p-2 outline-none appearance-none bg-inherit"
-            >
-              <option value="1" className="">
-                بدون والد
-              </option>
-              <option value="1" className="">
-                دسته شماره یک
-              </option>
-            </select>
-          </div>
+  const {parents} = useParentsCategory();
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-              عنوان دسته
-            </span>
-            <input
+  return (
+    <Modal fullScreen={true} title="افزودن دسته محصول">
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+      >
+        <div>
+          <Form>
+            {parents.length > 0 ? (
+              <FormikControl
+                control="select"
+                name="parent_id"
+                options={parents}
+                label="دسته والد"
+              />
+            ) : null}
+
+            <FormikControl
+              control="input"
               type="text"
-              name=""
-              className="w-full defaultText p-2 outline-none"
+              name="title"
+              label="عنوان دسته"
               placeholder="عنوان دسته"
             />
-          </div>
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 p-2 flex items-center justify-center">
-              توضیحات
-            </span>
-            <textarea
-              type="text"
-              name=""
-              className="w-full defaultText p-2 resize-none h-30 outline-none"
+            <FormikControl
+              control="textarea"
+              name="descriptions"
+              label="توضیحات"
               placeholder="توضیحات"
             />
-          </div>
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 p-2 flex items-center justify-center">
-              تصویر
-            </span>
-            <input
-              type="file"
-              name=""
-              className="w-full defaultText p-2 outline-none"
+            <FormikControl
+              control="file"
+              name="image"
+              label="تصویر"
+              placeholder="تصویر مورد نظر را انتخواب کنید"
             />
-          </div>
 
-          <div className="mt-5">
-            <label htmlFor="formCheck" className="flex gap-2">
-              وضعیت فعال
-              <div className="flex w-5 h-5 border border-gray-500 rounded-[3px] cursor-pointer">
-                <input
-                  type="checkbox"
-                  name=""
-                  id="formCheck"
-                  className="sr-only w-full h-full peer"
-                />
-                <FaCheck className="text-green-500 hidden peer-checked:inline" />
-              </div>
-            </label>
-          </div>
+            <div className="flex gap-4">
+              <FormikControl
+                control="checkbox"
+                name="is_active"
+                label="وضعیت فعال"
+              />
+              <FormikControl
+                control="checkbox"
+                name="show_in_menu"
+                label="وضعیت نمایش در صفحه"
+              />
+            </div>
 
-          <div className="py-2.5 text-center">
-            <button
-              type="submit"
-              className="bg-sky-400 text-white py-2 px-4 rounded-md cursor-pointer"
-            >
-              ذخیره
-            </button>
-          </div>
-        </form>
-      </div>
+            <SubmitBtn />
+          </Form>
+        </div>
+      </Formik>
     </Modal>
   );
 };
