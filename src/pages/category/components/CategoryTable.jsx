@@ -5,10 +5,15 @@ import Actions from "./Actions";
 import ShowInMenue from "./tableAdditions/ShowInMenu";
 import { convertToDateToJalali } from "../../../utils/convertDate";
 import { useGetCategories } from "../../../api/category/hooks/useCategories";
+import AddCategory from "./AddCategory";
+import { useContext } from "react";
+import { AdminContext } from "../../../context/AdminContextContainer";
 
 const CategoryTable = () => {
   const { categoryId } = useParams();
-  const { data, loading, error } = useGetCategories(categoryId);
+  const { data, loading, error, refetch } = useGetCategories(categoryId);
+
+  const { setModalOpen } = useContext(AdminContext);
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -31,6 +36,11 @@ const CategoryTable = () => {
     },
   ];
 
+  const handleOnSuccess = () => {
+    refetch();
+    setModalOpen(false);
+  };
+
   return (
     <>
       <Outlet />
@@ -43,6 +53,7 @@ const CategoryTable = () => {
         isLoading={loading}
         error={error}
       />
+      <AddCategory onSuccess={handleOnSuccess} />
     </>
   );
 };

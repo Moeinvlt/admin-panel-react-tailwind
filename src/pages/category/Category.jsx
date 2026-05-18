@@ -6,10 +6,7 @@ const Category = () => {
 
   return (
     <div className="px-8">
-
       <CategoryTable />
-
-      <AddCategory />
     </div>
   );
 };

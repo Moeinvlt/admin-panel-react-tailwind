@@ -1,4 +1,7 @@
 import * as Yup from "yup";
+import { Toasty } from "../../utils/customToast";
+import { createCategoryApi } from "../../api/category/categoryApi";
+
 
 export const initialValues = {
   title: "",
@@ -9,8 +12,46 @@ export const initialValues = {
   image: null,
 };
 
-export const onSubmit = (values, actions) => {
-  console.log(values);
+export const onSubmit = async (values, actions, onSuccess) => {
+  try {
+    values = {
+      ...values,
+      is_active: values.is_active ? 1 : 0,
+      show_in_menu: values.show_in_menu ? 1 : 0,
+    };
+
+    const res = await createCategoryApi(values);
+
+    // بررسی خطای اعتبارسنجی در بدنه پاسخ (حتی با status 202)
+    if (res.data && res.data.title && Array.isArray(res.data.title)) {
+      // فرض می‌کنیم آرایه title حاوی پیام خطاست
+      const errorMessage = res.data.title[0] || "خطای اعتبارسنجی در عنوان دسته";
+      Toasty(errorMessage, "error");
+      return;
+    }
+
+    // اگر خطای اعتبارسنجی نبود و status 201 بود، موفقیت
+    if (res.status === 201) {
+      Toasty('عملیات با موفقیت انجام شد', 'success');
+      actions.resetForm();
+      onSuccess && onSuccess();
+      // در صورت نیاز، بستن مودال یا رفرش جدول
+    } 
+    // اگر status 202 بود ولی خطای اعتبارسنجی نداشتیم (یعنی احتمالاً در صف پردازش)
+    else if (res.status === 202) {
+      Toasty('درخواست شما ثبت و در حال پردازش است', 'info');
+      actions.resetForm();
+    }
+    else {
+      Toasty('خطای غیرمنتظره از سرور', 'error');
+    }
+  } catch (err) {
+    // خطای شبکه یا خطای سرور که در catch می‌افتد
+    const msg = err.response?.data?.message || err.message || 'خطای شبکه یا سرور';
+    Toasty(msg, 'error');
+  } finally {
+    actions.setSubmitting(false);
+  }
 };
 
 export const validationSchema = Yup.object({

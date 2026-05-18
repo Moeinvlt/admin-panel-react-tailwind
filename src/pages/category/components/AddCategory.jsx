@@ -7,15 +7,16 @@ import { Toasty } from "../../../utils/customToast";
 import { initialValues, onSubmit, validationSchema } from "../core";
 import { useParentsCategory } from "../../../api/category/hooks/useParentsCategory";
 
-const AddCategory = () => {
-  const {parents} = useParentsCategory();
+const AddCategory = ({ onSuccess }) => {
+  const { parents, reInitialValues } = useParentsCategory(initialValues);
 
   return (
     <Modal fullScreen={true} title="افزودن دسته محصول">
       <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
+        initialValues={reInitialValues || initialValues}
+        onSubmit={(values, actions) => onSubmit(values, actions, onSuccess)}
         validationSchema={validationSchema}
+        enableReinitialize
       >
         <div>
           <Form>

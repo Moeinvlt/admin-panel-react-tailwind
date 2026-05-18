@@ -101,7 +101,7 @@ const DataTable = ({
         <div className="w-full">
           <div className="overflow-x-auto customBox w-full">
             <table className="w-full text-sm text-nowrap min-w-175">
-              <thead className="">
+              <thead>
                 <tr>
                   {dataInfo.map((i) => (
                     <th key={i.field} className="py-3 px-2 defaultText">
@@ -123,7 +123,7 @@ const DataTable = ({
 
               <tbody>
                 {paginatedData.map((d) => (
-                  <tr className="border-t border-border-light dark:border-border-dark">
+                  <tr className="border-t border-border-light dark:border-border-dark hover:bg-gray-300/60 hover:dark:bg-gray-900/80">
                     {dataInfo.map((i) => (
                       <td
                         key={i.field + "_" + d.id}

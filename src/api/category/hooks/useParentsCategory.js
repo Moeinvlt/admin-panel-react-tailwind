@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { getCategoriesApi } from "../categoryApi";
 import { Toasty } from "../../../utils/customToast";
+import { useParams } from "react-router";
 
-export const useParentsCategory = () => {
+export const useParentsCategory = (initialValues = null) => {
   const [parents, setParents] = useState([]);
+  const [reInitialValues, setReInitialValues] = useState(null);
+  const params = useParams();
 
   const fetchParentsCategory = async () => {
     try {
       const res = await getCategoriesApi();
       if (res.status === 200) {
         const allParents = res.data.data;
-        console.log(allParents);
         setParents(
           allParents.map((p) => {
             return { id: p.id, value: p.title };
@@ -23,9 +25,24 @@ export const useParentsCategory = () => {
     }
   };
 
+  const handleGetInitialValues = () => {
+    if (params.categoryId) {
+      setReInitialValues({
+        ...initialValues,
+        parent_id: params.categoryId,
+      });
+    } else {
+      setReInitialValues(null);
+    }
+  };
+
+  useEffect(() => {
+    handleGetInitialValues();
+  }, [params.categoryId]);
+
   useEffect(() => {
     fetchParentsCategory();
   }, []);
 
-  return { parents }
+  return { parents, reInitialValues };
 };
