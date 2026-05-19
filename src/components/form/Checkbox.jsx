@@ -1,18 +1,30 @@
+import { FastField } from "formik";
 import { FaCheck } from "react-icons/fa";
 
 const Checkbox = ({ name, label }) => {
   return (
     <div className="mt-5">
-      <label htmlFor={name} className="flex gap-2 defaultText">
-        {label}
-        <div className="flex w-5 h-5 border border-gray-500 rounded-[3px] cursor-pointer">
-          <input
-            type="checkbox"
-            name={name}
-            id={name}
-            className="sr-only w-full h-full peer"
-          />
-          <FaCheck className="text-green-500 hidden peer-checked:inline" />
+      <label className="flex gap-2 defaultText cursor-pointer items-center">
+        <span>{label}</span>
+        <div className="relative w-5 h-5 border border-gray-500 rounded-[3px]">
+          <FastField name={name}>
+            {({ field }) => (
+              <>
+                <input
+                  type="checkbox"
+                  id={name}
+                  {...field}
+                  checked={
+                    field.value === true ||
+                    field.value === 1 ||
+                    field.value === "1"
+                  }
+                  className="sr-only peer"
+                />
+                <FaCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-green-500 hidden peer-checked:block" />
+              </>
+            )}
+          </FastField>
         </div>
       </label>
     </div>

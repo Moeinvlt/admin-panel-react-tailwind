@@ -8,10 +8,16 @@ import { useGetCategories } from "../../../api/category/hooks/useCategories";
 import AddCategory from "./AddCategory";
 import { useContext } from "react";
 import { AdminContext } from "../../../context/AdminContextContainer";
+import { CategoryContext } from "../../../context/CategoryContext";
+import { Alert } from "../../../utils/alerts";
+import { useDeleteCategory } from "../../../api/category/hooks/useDeleteCategory";
+import IsActive from "./tableAdditions/IsActive";
 
 const CategoryTable = () => {
   const { categoryId } = useParams();
-  const { data, loading, error, refetch } = useGetCategories(categoryId);
+  const { data, loading, error, refetch, setData } = useGetCategories(categoryId);
+  const { setEditId } = useContext(CategoryContext);
+  const { deleteCategory } = useDeleteCategory(setData)
 
   const { setModalOpen } = useContext(AdminContext);
 
@@ -23,22 +29,27 @@ const CategoryTable = () => {
 
   const additionalField = [
     {
-      title: "تاریخ",
-      elements: (rowData) => convertToDateToJalali(rowData.created_at),
-    },
-    {
       title: "نمایش در منو",
       elements: (rowData) => <ShowInMenue rowData={rowData} />,
     },
     {
+      title: "وضعیت",
+      elements: (rowData) => <IsActive rowData={rowData} />,
+    },
+    {
+      title: "تاریخ",
+      elements: (rowData) => convertToDateToJalali(rowData.created_at),
+    },
+    {
       title: "عملیات",
-      elements: (rowData) => <Actions rowData={rowData} />,
+      elements: (rowData) => <Actions rowData={rowData} handleDelete={deleteCategory} />,
     },
   ];
 
   const handleOnSuccess = () => {
     refetch();
     setModalOpen(false);
+    setEditId(null);
   };
 
   return (

@@ -33,7 +33,7 @@ const DataTable = ({
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, data]);
+  }, [searchTerm]);
 
   const paginatedData = useMemo(() => {
     const start = (currentPage - 1) * limit;
@@ -52,6 +52,14 @@ const DataTable = ({
   const goToPage = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) setCurrentPage(pageNumber);
   };
+
+  useEffect(() => {
+    if (totalPages > 0 && currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    } else if (totalPages === 0) {
+      setCurrentPage(1);
+    }
+  }, [totalPages, currentPage]);
 
   return (
     <>
@@ -86,7 +94,8 @@ const DataTable = ({
           role="alert"
           className="bg-red-500/70 text-white p-4 rounded-md text-center"
         >
-         <FaExclamationTriangle className="inline-block text-amber-300"/> خطایی رخ داده است. لطفاً مجدداً تلاش کنید. 
+          <FaExclamationTriangle className="inline-block text-amber-300" />{" "}
+          خطایی رخ داده است. لطفاً مجدداً تلاش کنید.
         </div>
       ) : paginatedData.length === 0 ? (
         <div

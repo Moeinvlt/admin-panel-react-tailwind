@@ -44,5 +44,5 @@ export const useParentsCategory = (initialValues = null) => {
     fetchParentsCategory();
   }, []);
 
-  return { parents, reInitialValues };
+  return { parents, reInitialValues ,setReInitialValues };
 };

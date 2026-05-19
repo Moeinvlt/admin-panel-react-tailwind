@@ -6,15 +6,26 @@ import SubmitBtn from "../../../components/form/SubmitBtn";
 import { Toasty } from "../../../utils/customToast";
 import { initialValues, onSubmit, validationSchema } from "../core";
 import { useParentsCategory } from "../../../api/category/hooks/useParentsCategory";
+import { useEditCategory } from "../../../api/category/hooks/useEditCategory";
 
 const AddCategory = ({ onSuccess }) => {
-  const { parents, reInitialValues } = useParentsCategory(initialValues);
+  const { parents } = useParentsCategory();
+  const { reInitialValues, editId, editCategory } = useEditCategory(initialValues)
 
   return (
-    <Modal fullScreen={true} title="افزودن دسته محصول">
+    <Modal
+      fullScreen={true}
+      title={
+        editId
+          ? " ویرایش " + (editCategory ? editCategory.title : "")
+          : "افزودن دسته محصول"
+      }
+    >
       <Formik
         initialValues={reInitialValues || initialValues}
-        onSubmit={(values, actions) => onSubmit(values, actions, onSuccess)}
+        onSubmit={(values, actions) =>
+          onSubmit(values, actions, onSuccess, editId)
+        }
         validationSchema={validationSchema}
         enableReinitialize
       >
@@ -44,12 +55,14 @@ const AddCategory = ({ onSuccess }) => {
               placeholder="توضیحات"
             />
 
-            <FormikControl
-              control="file"
-              name="image"
-              label="تصویر"
-              placeholder="تصویر مورد نظر را انتخواب کنید"
-            />
+            {!editId ? (
+              <FormikControl
+                control="file"
+                name="image"
+                label="تصویر"
+                placeholder="تصویر مورد نظر را انتخواب کنید"
+              />
+            ) : null}
 
             <div className="flex gap-4">
               <FormikControl

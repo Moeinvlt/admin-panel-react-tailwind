@@ -2,9 +2,16 @@ import { useContext } from "react";
 import { createPortal } from "react-dom";
 import { AdminContext } from "../context/AdminContextContainer";
 import { HiX } from "react-icons/hi";
+import { CategoryContext } from "../context/CategoryContext";
 
 const Modal = ({ children, fullScreen=true, title }) => {
   const { modalOpen, setModalOpen } = useContext(AdminContext);
+  const { setEditId } = useContext(CategoryContext);
+
+  const handleOnClose = () => {
+    setModalOpen(false) 
+     setEditId(null)
+  }
 
   return createPortal(
     <div
@@ -27,7 +34,7 @@ const Modal = ({ children, fullScreen=true, title }) => {
           <button
             type="button"
             className="text-red-500 hover:text-red-600 cursor-pointer text-2xl"
-            onClick={() => setModalOpen(false)}
+            onClick={handleOnClose}
           >
             <HiX />
           </button>

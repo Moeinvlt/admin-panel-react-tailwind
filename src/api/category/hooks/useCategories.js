@@ -32,5 +32,5 @@ export const useGetCategories = (categoryId = null) => {
     fetchCategories();
   }, [fetchCategories]);
 
-  return { data, loading, error, refetch: fetchCategories };
+  return { data, setData, loading, error, refetch: fetchCategories };
 };

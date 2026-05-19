@@ -4,6 +4,10 @@ export const getCategoriesApi = (id=null) => {
     return httpService(`/admin/categories${id ? `?parent=${id}` : ""}`, 'get')
 }
 
+export const getSingleCategoryApi = (id) => {
+    return httpService(`/admin/categories/${id}`, 'get')
+}
+
 export const createCategoryApi = (data) => {
     if (data.image) {
         let formdata = new FormData();
@@ -19,4 +23,12 @@ export const createCategoryApi = (data) => {
     }
 
     return httpService('/admin/categories', 'post', data);
+}
+
+export const editCategoryApi = (id, data) => {
+    return httpService(`/admin/categories/${id}`, 'put', data);
+}
+
+export const deleteCategoryApi = (id) => {
+    return httpService(`/admin/categories/${id}`, 'delete');
 }

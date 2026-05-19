@@ -1,7 +1,9 @@
 import * as Yup from "yup";
 import { Toasty } from "../../utils/customToast";
-import { createCategoryApi } from "../../api/category/categoryApi";
-
+import {
+  createCategoryApi,
+  editCategoryApi,
+} from "../../api/category/categoryApi";
 
 export const initialValues = {
   title: "",
@@ -12,7 +14,7 @@ export const initialValues = {
   image: null,
 };
 
-export const onSubmit = async (values, actions, onSuccess) => {
+export const onSubmit = async (values, actions, onSuccess, editId) => {
   try {
     values = {
       ...values,
@@ -20,35 +22,38 @@ export const onSubmit = async (values, actions, onSuccess) => {
       show_in_menu: values.show_in_menu ? 1 : 0,
     };
 
-    const res = await createCategoryApi(values);
+    if (editId) {
+      const res = await editCategoryApi(editId, values);
+      if (res.status === 200) {
+        Toasty(res.data.message, "success");
+        actions.resetForm();
+        onSuccess && onSuccess();
+      }
+    } else {
+      const res = await createCategoryApi(values);
 
-    // بررسی خطای اعتبارسنجی در بدنه پاسخ (حتی با status 202)
-    if (res.data && res.data.title && Array.isArray(res.data.title)) {
-      // فرض می‌کنیم آرایه title حاوی پیام خطاست
-      const errorMessage = res.data.title[0] || "خطای اعتبارسنجی در عنوان دسته";
-      Toasty(errorMessage, "error");
-      return;
-    }
+      if (res.data && res.data.title && Array.isArray(res.data.title)) {
+        const errorMessage =
+          res.data.title[0] || "خطای اعتبارسنجی در عنوان دسته";
+        Toasty(errorMessage, "error");
+        return;
+      }
 
-    // اگر خطای اعتبارسنجی نبود و status 201 بود، موفقیت
-    if (res.status === 201) {
-      Toasty('عملیات با موفقیت انجام شد', 'success');
-      actions.resetForm();
-      onSuccess && onSuccess();
-      // در صورت نیاز، بستن مودال یا رفرش جدول
-    } 
-    // اگر status 202 بود ولی خطای اعتبارسنجی نداشتیم (یعنی احتمالاً در صف پردازش)
-    else if (res.status === 202) {
-      Toasty('درخواست شما ثبت و در حال پردازش است', 'info');
-      actions.resetForm();
-    }
-    else {
-      Toasty('خطای غیرمنتظره از سرور', 'error');
+      if (res.status === 201) {
+        Toasty("عملیات با موفقیت انجام شد", "success");
+        actions.resetForm();
+        onSuccess && onSuccess();
+      } else if (res.status === 202) {
+        Toasty("درخواست شما ثبت و در حال پردازش است", "info");
+        actions.resetForm();
+      } else {
+        Toasty("خطای غیرمنتظره از سرور", "error");
+      }
     }
   } catch (err) {
-    // خطای شبکه یا خطای سرور که در catch می‌افتد
-    const msg = err.response?.data?.message || err.message || 'خطای شبکه یا سرور';
-    Toasty(msg, 'error');
+    const msg =
+      err.response?.data?.message || err.message || "خطای شبکه یا سرور";
+    Toasty(msg, "error");
   } finally {
     actions.setSubmitting(false);
   }
