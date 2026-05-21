@@ -5,6 +5,7 @@ import ModalToggleBtn from "./ModalToggleBtn";
 import { Toasty } from "../utils/customToast";
 import TableLoading from "./loading/TableLoading";
 import { FaExclamationTriangle } from "react-icons/fa";
+import PrevPageBtn from "./PrevPageBtn";
 
 const DataTable = ({
   data,
@@ -14,6 +15,8 @@ const DataTable = ({
   title,
   isLoading,
   error,
+  modalBtn = true,
+  prevPageBtn = false,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -82,9 +85,17 @@ const DataTable = ({
           </button>
         </div>
 
-        <div>
-          <ModalToggleBtn />
-        </div>
+        {modalBtn && (
+          <div>
+            <ModalToggleBtn />
+          </div>
+        )}
+
+        {prevPageBtn ? (
+          <div>
+            <PrevPageBtn />
+          </div>
+        ) : null}
       </div>
 
       {isLoading ? (
@@ -100,7 +111,7 @@ const DataTable = ({
       ) : paginatedData.length === 0 ? (
         <div
           role="alert"
-          className="bg-red-500/60 text-black p-4 rounded-md text-[20px] flex items-center justify-center gap-1.5"
+          className="bg-red-500/70 text-black dark:text-white p-4 rounded-md text-[20px] flex items-center justify-center gap-1.5"
         >
           {" "}
           <MdWarning className="text-red-500 text-[22px]" />

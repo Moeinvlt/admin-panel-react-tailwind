@@ -1,4 +1,4 @@
-import { FaPlus } from "react-icons/fa";
+import { FaReceipt } from "react-icons/fa";
 import { FiEdit2 } from "react-icons/fi";
 import { FaSitemap } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
@@ -15,9 +15,9 @@ const Actions = ({ rowData, handleDelete }) => {
   const { setModalOpen } = useContext(AdminContext);
 
   const handleOnOpen = () => {
-    setModalOpen(true)
-    setEditId(rowData.id)
-  }
+    setModalOpen(true);
+    setEditId(rowData.id);
+  };
 
   return (
     <>
@@ -25,13 +25,11 @@ const Actions = ({ rowData, handleDelete }) => {
         <button
           type="button"
           className="text-sky-500 cursor-pointer text-[16px] bg-sky-500/30 hover:bg-sky-500 hover:text-white transition-all duration-150 p-2 rounded-md"
-          onClick={() =>
+          onClick={() => {
             navigate(`/categories/${rowData.id}`, {
-              state: {
-                parentData: rowData,
-              },
-            })
-          }
+              state: { parentData: rowData },
+            });
+          }}
         >
           <FaSitemap />
         </button>
@@ -43,12 +41,21 @@ const Actions = ({ rowData, handleDelete }) => {
       >
         <FiEdit2 />
       </button>
-      <button
-        type="button"
-        className="text-green-500 cursor-pointer text-[16px] mr-2 bg-green-500/30 hover:bg-green-500 hover:text-white transition-all duration-150 p-2 rounded-md"
-      >
-        <FaPlus />
-      </button>
+      {params.categoryId ? (
+        <button
+          type="button"
+          className="text-green-500 cursor-pointer text-[16px] mr-2 bg-green-500/30 hover:bg-green-500 hover:text-white transition-all duration-150 p-2 rounded-md"
+          onClick={() =>
+            navigate(`/categories/${rowData.id}/attributes`, {
+              state: {
+                categoryData: rowData,
+              },
+            })
+          }
+        >
+          <FaReceipt />
+        </button>
+      ) : null}
       <button
         type="button"
         className="text-red-400 cursor-pointer text-[16px] mr-2 bg-red-500/30 hover:bg-red-500 hover:text-white transition-all duration-150 p-2 rounded-md"

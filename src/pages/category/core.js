@@ -52,7 +52,7 @@ export const onSubmit = async (values, actions, onSuccess, editId) => {
     }
   } catch (err) {
     const msg =
-      err.response?.data?.message || err.message || "خطای شبکه یا سرور";
+      err.res?.data?.message || err.message || "خطای شبکه یا سرور";
     Toasty(msg, "error");
   } finally {
     actions.setSubmitting(false);
