@@ -8,13 +8,16 @@ import ShowInFilter from "./attrsAdditions/ShowInFilter";
 import DataTable from "../../../../components/DataTable";
 import { useCategoryAttrs } from "../../../../api/category/hooks/attrs/useCategoryAttrs";
 import { initialValues, onSubmit, validationSchema } from "./core";
-import { Toasty } from "../../../../utils/customToast";
+import { useEditCategoryAttrs } from "../../../../api/category/hooks/attrs/useEditCategoryAttrs";
+import { useDeleteCategoryAttrs } from "../../../../api/category/hooks/attrs/useDeleteCategoryAttrs";
 
 const AddAttributes = () => {
   const location = useLocation();
   const categoryDataId = location.state.categoryData.id;
 
   const { data, loading, error, setData } = useCategoryAttrs(categoryDataId);
+  const { attrToEdit, setAttrToEdit, reInitialValues } = useEditCategoryAttrs();
+  const { deleteCategoryAttr } = useDeleteCategoryAttrs(setData);
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -29,7 +32,14 @@ const AddAttributes = () => {
     },
     {
       title: "عملیات",
-      elements: (rowData) => <AttrsActions rowData={rowData} />,
+      elements: (rowData) => (
+        <AttrsActions
+          rowData={rowData}
+          attrToEdit={attrToEdit}
+          setAttrToEdit={setAttrToEdit}
+          handleDelete={deleteCategoryAttr}
+        />
+      ),
     },
   ];
 
@@ -47,12 +57,27 @@ const AddAttributes = () => {
       </h4>
 
       <Formik
-        initialValues={initialValues}
-        onSubmit={(values, actions) => onSubmit(values, actions, categoryDataId, setData)}
+        initialValues={reInitialValues || initialValues}
+        onSubmit={(values, actions) =>
+          onSubmit(
+            values,
+            actions,
+            categoryDataId,
+            setData,
+            attrToEdit,
+            setAttrToEdit
+          )
+        }
         validationSchema={validationSchema}
+        enableReinitialize
       >
         <Form>
-          <div className="mx-auto flex flex-col xl:flex-row gap-7 items-center justify-center border-b pb-8 border-border-light dark:border-border-dark">
+          <div
+            className={`mx-auto flex flex-col flex-wrap xl:flex-row gap-7 items-center
+           justify-center border-b pb-8 border-border-light dark:border-border-dark ${
+             attrToEdit ? "" : ""
+           }`}
+          >
             <div className="w-full max-w-100">
               <FormikControl
                 control="input"
@@ -84,6 +109,16 @@ const AddAttributes = () => {
             >
               <FaCheck className="inline-block" />
             </button>
+
+            {attrToEdit && (
+              <button
+                type="button"
+                className="bg-gray-500 text-white cursor-pointer py-1 px-2 rounded-md mt-4 text-sm"
+                onClick={() => setAttrToEdit(null)}
+              >
+                انصراف
+              </button>
+            )}
           </div>
         </Form>
       </Formik>

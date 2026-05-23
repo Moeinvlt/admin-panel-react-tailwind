@@ -7,3 +7,11 @@ export const getCategoryAttrsApi = (categoryId) => {
 export const addCategoryAttrsApi = (categoryId, data) => {
     return httpService(`/admin/categories/${categoryId}/attributes`, 'post', data)
 }
+
+export const editCategoryAttrsApi = (attrId, data) => {
+    return httpService(`/admin/categories/attributes/${attrId}`, 'put', data)
+}
+
+export const deleteCategoryAttrsApi = (attrId) => {
+    return httpService(`/admin/categories/attributes/${attrId}`, 'delete')
+}
