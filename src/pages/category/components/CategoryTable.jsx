@@ -15,9 +15,10 @@ import IsActive from "./tableAdditions/IsActive";
 
 const CategoryTable = () => {
   const { categoryId } = useParams();
-  const { data, loading, error, refetch, setData } = useGetCategories(categoryId);
+  const { data, loading, error, refetch, setData } =
+    useGetCategories(categoryId);
   const { setEditId } = useContext(CategoryContext);
-  const { deleteCategory } = useDeleteCategory(setData)
+  const { deleteCategory } = useDeleteCategory(setData);
 
   const { setModalOpen } = useContext(AdminContext);
 
@@ -37,12 +38,14 @@ const CategoryTable = () => {
       elements: (rowData) => <IsActive rowData={rowData} />,
     },
     {
-      title: "تاریخ",
+      title: "تاریخ ساخت",
       elements: (rowData) => convertToDateToJalali(rowData.created_at),
     },
     {
       title: "عملیات",
-      elements: (rowData) => <Actions rowData={rowData} handleDelete={deleteCategory} />,
+      elements: (rowData) => (
+        <Actions rowData={rowData} handleDelete={deleteCategory} />
+      ),
     },
   ];
 

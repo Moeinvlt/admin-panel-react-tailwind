@@ -1,80 +1,96 @@
 import { FaCheck } from "react-icons/fa";
 import Modal from "../../../components/Modal";
+import { Form, Formik } from "formik";
+import FormikControl from "../../../components/form/FormikControl";
+import SubmitBtn from "../../../components/form/SubmitBtn";
+import { initialValues, onSubmit, validationSchema } from "../core";
+import { apiPath } from "../../../api/httpService";
+import { useEffect, useState } from "react";
 
-const AddBrand = () => {
+const AddBrand = ({ onSuccess, setData, brandToEdit, setBrandToEdit }) => {
+  const [reInitialValues, setReInitialValues] = useState(null);
+
+  useEffect(() => {
+    if (brandToEdit) {
+      setReInitialValues({
+        original_name: brandToEdit.original_name,
+        persian_name: brandToEdit.persian_name || "",
+        descriptions: brandToEdit.descriptions || "",
+        logo: null,
+      });
+    } else {
+      setReInitialValues(null);
+    }
+  }, [brandToEdit]);
+
+
   return (
-    <Modal fullScreen={false} title="افزودن برند">
-      <div>
-        <form>
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-              عنوان لاتین
-            </span>
-            <input
+    <Modal
+      fullScreen={false}
+      title={brandToEdit ? "ویرایش برند" : "افزودن برند"}
+    >
+      <Formik
+        initialValues={reInitialValues || initialValues}
+        onSubmit={(values, actions) =>
+          onSubmit(
+            values,
+            actions,
+            onSuccess,
+            setData,
+            brandToEdit,
+            setBrandToEdit
+          )
+        }
+        validationSchema={validationSchema}
+        enableReinitialize
+      >
+        <div>
+          <Form>
+            <FormikControl
+              control="input"
               type="text"
-              name=""
-              className="w-full defaultText p-2 outline-none"
+              name="original_name"
+              label="عنوان لاتین"
               placeholder="عنوان لاتین"
             />
-          </div>
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-              عنوان فارسی
-            </span>
-            <input
+            <FormikControl
+              control="input"
               type="text"
-              name=""
-              className="w-full defaultText p-2 outline-none"
+              name="persian_name"
+              label="عنوان فارسی"
               placeholder="عنوان فارسی"
             />
-          </div>
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-              توضیحات
-            </span>
-            <input
+            <FormikControl
+              control="input"
               type="text"
-              name=""
-              className="w-full defaultText p-2 outline-none"
+              name="descriptions"
+              label="توضیحات"
               placeholder="توضیحات کوتاه درباره برند"
             />
-          </div>
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 p-2 flex items-center justify-center">
-              تصویر
-            </span>
-            <input
-              type="file"
-              name=""
-              className="w-full defaultText p-2 outline-none"
+            {brandToEdit && (
+              <div className="w-full mt-4">
+                <img
+                  src={apiPath + "/" + brandToEdit.logo}
+                  className="w-30 mx-auto"
+                  alt="logo"
+                />
+              </div>
+            )}
+
+            <FormikControl
+              control="file"
+              name="logo"
+              label="لوگو"
+              placeholder="کوتاه "
             />
-          </div>
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-              توضیح تصویر
-            </span>
-            <input
-              type="text"
-              name=""
-              className="w-full defaultText p-2 outline-none"
-              placeholder="توضیح تصویر"
-            />
-          </div>
-
-          <div className="py-4 text-center">
-            <button
-              type="submit"
-              className="bg-sky-400 text-white py-2 px-4 rounded-md cursor-pointer"
-            >
-              ذخیره
-            </button>
-          </div>
-        </form>
-      </div>
+            <SubmitBtn />
+          </Form>
+        </div>
+      </Formik>
     </Modal>
   );
 };

@@ -10,8 +10,24 @@ axios.interceptors.response.use(
   },
   (error) => {
     const status = error?.response?.status;
-    const message =
-      error?.response?.data?.message || "مشکلی رخ داده است";
+    const message = error?.response?.data?.message || "مشکلی رخ داده است";
+
+    if (
+      error?.response?.data &&
+      typeof error.response.data === "object" &&
+      !error.response.data.message
+    ) {
+      let errorMessage = "";
+      for (const key in error.response.data) {
+        // فرض می‌کنیم مقدار آرایه است و اولین عضو را می‌گیریم
+        if (Array.isArray(error.response.data[key])) {
+          errorMessage += `${key} : ${error.response.data[key][0]}\n`;
+        } else {
+          errorMessage += `${key} : ${error.response.data[key]}\n`;
+        }
+      }
+      message = errorMessage.trim() || message;
+    }
 
     // 401 => logout + redirect
     if (status === 401) {
@@ -47,14 +63,18 @@ const httpService = (url, method, data = null) => {
     }
   }
 
+  const headers = {
+    ...(tokenInfo?.token ? { Authorization: `Bearer ${tokenInfo.token}` } : {}),
+  };
+  if (!(data instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
+
   return axios({
     url: apiPath + "/api" + url,
     method,
-    data, 
-    headers: {
-      ...(tokenInfo?.token ? { Authorization: `Bearer ${tokenInfo.token}` } : {}),
-      "Content-Type": "application/json",
-    },
+    data,
+    headers,
   });
 };
 
