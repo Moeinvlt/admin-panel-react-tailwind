@@ -14,7 +14,6 @@ import { AdminContext } from "../../../context/AdminContextContainer";
 import { Alert } from "../../../utils/alerts";
 import { deleteBrandApi } from "../../../api/brands/brandsApi";
 import { Toasty } from "../../../utils/customToast";
-import { useEditBrand } from "../../../api/brands/hooks/useEditBrand";
 
 const BrandsTable = () => {
   const { data, setData, loading, error } = useGetBrands();

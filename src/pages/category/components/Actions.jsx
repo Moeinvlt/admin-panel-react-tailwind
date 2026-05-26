@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router";
 import { useContext } from "react";
 import { CategoryContext } from "../../../context/CategoryContext";
 import { AdminContext } from "../../../context/AdminContextContainer";
+import ActionBtn from "../../../components/ActionBtn";
 
 const Actions = ({ rowData, handleDelete }) => {
   const navigate = useNavigate();
@@ -22,29 +23,28 @@ const Actions = ({ rowData, handleDelete }) => {
   return (
     <>
       {!params.categoryId ? (
-        <button
-          type="button"
-          className="text-sky-500 cursor-pointer text-[16px] bg-sky-500/30 hover:bg-sky-500 hover:text-white transition-all duration-150 p-2 rounded-md"
+        <ActionBtn
+          bgColor="bg-sky-500"
+          iconColor="text-sky-500"
+          icon={<FaSitemap />}
           onClick={() => {
             navigate(`/categories/${rowData.id}`, {
               state: { parentData: rowData },
             });
           }}
-        >
-          <FaSitemap />
-        </button>
+        />
       ) : null}
-      <button
-        type="button"
-        className="text-purple-500 cursor-pointer text-[16px] mr-2 bg-purple-500/30 hover:bg-purple-500 hover:text-white transition-all duration-150 p-2 rounded-md"
+      <ActionBtn
+        bgColor="bg-purple-500"
+        iconColor="text-purple-500"
+        icon={<FiEdit2 />}
         onClick={handleOnOpen}
-      >
-        <FiEdit2 />
-      </button>
+      />
       {params.categoryId ? (
-        <button
-          type="button"
-          className="text-green-500 cursor-pointer text-[16px] mr-2 bg-green-500/30 hover:bg-green-500 hover:text-white transition-all duration-150 p-2 rounded-md"
+        <ActionBtn
+          bgColor="bg-green-500"
+          iconColor="text-green-500"
+          icon={<FaReceipt />}
           onClick={() =>
             navigate(`/categories/${rowData.id}/attributes`, {
               state: {
@@ -52,17 +52,14 @@ const Actions = ({ rowData, handleDelete }) => {
               },
             })
           }
-        >
-          <FaReceipt />
-        </button>
+        />
       ) : null}
-      <button
-        type="button"
-        className="text-red-400 cursor-pointer text-[16px] mr-2 bg-red-500/30 hover:bg-red-500 hover:text-white transition-all duration-150 p-2 rounded-md"
+      <ActionBtn
+        bgColor="bg-red-500"
+        iconColor="text-red-400"
+        icon={<FaTrash />}
         onClick={() => handleDelete(rowData)}
-      >
-        <FaTrash />
-      </button>
+      />
     </>
   );
 };

@@ -1,24 +1,22 @@
 import { FaTrash } from "react-icons/fa";
 import { FiEdit2 } from "react-icons/fi";
+import ActionBtn from "../../../../../components/ActionBtn";
 
 const AttrsActions = ({rowData, attrToEdit, setAttrToEdit, handleDelete}) => {
   return (
     <>
-      <button
-        type="button"
-        className={`text-purple-500 cursor-pointer text-[16px] mr-2 bg-purple-500/30 hover:bg-purple-500
-         hover:text-white transition-all duration-150 p-2 rounded-md ${attrToEdit && attrToEdit.id == rowData.id ? "bg-yellow-500 text-white" : ""}`}
+      <ActionBtn
+        bgColor={`${attrToEdit && attrToEdit.id == rowData.id ? "bg-yellow-500 text-white" : "bg-purple-500"}`}
+        iconColor="text-purple-500"
+        icon={<FiEdit2 />}
         onClick={() => setAttrToEdit(rowData)}
-      >
-        <FiEdit2 />
-      </button>
-      <button
-        type="button"
-        className="text-red-400 cursor-pointer text-[16px] mr-2 bg-red-500/30 hover:bg-red-500 hover:text-white transition-all duration-150 p-2 rounded-md"
+      />
+      <ActionBtn
+        bgColor="bg-red-500"
+        iconColor="text-red-400"
+        icon={<FaTrash />}
         onClick={() => handleDelete(rowData)}
-      >
-        <FaTrash />
-      </button>
+      />
     </>
   );
 };
