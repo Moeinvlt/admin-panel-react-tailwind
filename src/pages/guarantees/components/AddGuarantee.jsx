@@ -1,57 +1,86 @@
 import { FaCheck } from "react-icons/fa";
 import Modal from "../../../components/Modal";
+import FormikControl from "../../../components/form/FormikControl";
+import { Form, Formik } from "formik";
+import SubmitBtn from "../../../components/form/SubmitBtn";
+import { initialValues, onSubmit, validationSchema } from "../core";
+import { useEffect, useState } from "react";
 
-const AddGuarantee = () => {
+const AddGuarantee = ({
+  onSuccess,
+  setData,
+  guaranteeToEdit,
+  setGuaranteeToEdit,
+}) => {
+  const [reinitialValues, setReinitialValues] = useState(null);
+
+  useEffect(() => {
+    if (guaranteeToEdit) {
+      setReinitialValues({
+        title: guaranteeToEdit.title,
+        descriptions: guaranteeToEdit.descriptions || "",
+        length: guaranteeToEdit.length || "",
+        length_unit: guaranteeToEdit.length_unit || "",
+      });
+    } else {
+      setReinitialValues(null)
+    }
+  }, [guaranteeToEdit]);
+
   return (
-    <Modal fullScreen={false} title="افزودن گارانتی">
-      <div>
-        <form>
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-              عنوان گارانتی
-            </span>
-            <input
+    <Modal fullScreen={false} title={guaranteeToEdit ? "ویرایش گارانتی" : "افزودن گارانتی"}>
+      <Formik
+        initialValues={reinitialValues || initialValues}
+        onSubmit={(values, actions) =>
+          onSubmit(
+            values,
+            actions,
+            onSuccess,
+            setData,
+            guaranteeToEdit,
+            setGuaranteeToEdit
+          )
+        }
+        validationSchema={validationSchema}
+        enableReinitialize
+      >
+        <div>
+          <Form>
+            <FormikControl
+              control="input"
               type="text"
-              name=""
-              className="w-full defaultText p-2 outline-none"
+              name="title"
+              label="عنوان گارانتی"
               placeholder="عنوان گارانتی"
             />
-          </div>
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-               توضیحات گارانتی
-            </span>
-            <input
-              type="text"
-              name=""
-              className="w-full defaultText p-2 outline-none"
+            <FormikControl
+              control="textarea"
+              name="descriptions"
+              label="توضیحات گارانتی"
               placeholder="توضیحات گارانتی"
             />
-          </div>
 
-          <div className="customBox flex w-full max-w-130 mt-5">
-            <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-              مدت گارانتی
-            </span>
-            <input
-              type="text"
-              name=""
-              className="w-full defaultText p-2 outline-none"
-              placeholder="به ماه"
+            <FormikControl
+              control="input"
+              type="number"
+              name="length"
+              label="مدت گارانتی"
+              placeholder="فقط عدد"
             />
-          </div>
 
-          <div className="py-4 text-center">
-            <button
-              type="submit"
-              className="bg-sky-400 text-white py-2 px-4 rounded-md cursor-pointer"
-            >
-              ذخیره
-            </button>
-          </div>
-        </form>
-      </div>
+            <FormikControl
+              control="input"
+              type="text"
+              name="length_unit"
+              label="واحد"
+              placeholder="فقط حروف"
+            />
+
+            <SubmitBtn />
+          </Form>
+        </div>
+      </Formik>
     </Modal>
   );
 };

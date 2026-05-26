@@ -9,7 +9,6 @@ const Guarantees = () => {
 
       <GuaranteesTable />
 
-      <AddGuarantee />
     </div>
   );
 };
