@@ -103,6 +103,25 @@
   .main_loader .circle_loader:nth-child(3){
     animation: mainLoaderScreen 0.8S 0.4s infinite;
   }
+
+  .color-picker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    background: none;
+    padding: 0;
+  }
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
 }
 
 @keyframes mainLoaderScreen {

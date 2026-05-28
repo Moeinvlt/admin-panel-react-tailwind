@@ -6,7 +6,6 @@ const Colors = () => {
     <div className="px-8">
       <ColorsTable />
 
-      <AddColor />
     </div>
   );
 };
