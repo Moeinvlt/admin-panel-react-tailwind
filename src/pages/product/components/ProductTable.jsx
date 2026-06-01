@@ -1,88 +1,52 @@
 import { FaTrash } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa";         
-import { FiEdit2 } from "react-icons/fi"; 
-import { FaSitemap } from "react-icons/fa";                   
-import DataTable from "../../../components/DataTable";
+import { FaPlus } from "react-icons/fa";
+import { FiEdit2 } from "react-icons/fi";
+import { FaSitemap } from "react-icons/fa";
 import Actions from "./Actions";
-           
+import AddProduct from "./AddProduct";
+import PaginatedDataTable from "../../../components/PaginatedDataTable";
+import { useGetProducts } from "../../../api/products/hooks/useGetProducts";
 
 const ProductTable = () => {
-    const data = [
-    {
-      id: "1",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "2",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "3",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "4",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "5",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-    {
-      id: "5",
-      category: "222",
-      title: "lalalaaa",
-      price: "22222",
-      stock: "7",
-      like_count: "2",
-      status: "1",
-    },
-  ];
+  const { data, loading, error, currentPage, setCurrentPage, pageCount, handleSearch } = useGetProducts()
 
   const dataInfo = [
     { field: "id", title: "#" },
-    { field: "title", title: "عنوان محصول" },
-    { field: "price", title: "قیمت محصول" },
+    {
+      field: null,
+      title: "گروه محصول",
+      elements: (rowData) => rowData.categories[0]?.title,
+    },
+    { field: "title", title: "عنوان" },
+    { field: "price", title: "قیمت" },
+    { field: "stock", title: "موجودی" },
+    {
+      field: null,
+      title: "عملیات",
+      elements: (rowData) => <Actions rowData={rowData} />,
+    },
   ];
-
-  const additionalField = {
-    title: "عملیات",
-    elements: (itemId) => <Actions itemId={itemId} />,
+  const searchParams = {
+    title: "جستجو",
+    placeholder: "قسمتی از عنوان را وارد کنید",
   };
 
   return (
-    <DataTable 
-      title="مدیریت محصول"
-      data={data}
-      dataInfo={dataInfo}
-      additionalField={additionalField}
-      limit={5}
-    />
+    <>
+      <PaginatedDataTable
+        title="مدیریت محصول"
+        tableData={data}
+        dataInfo={dataInfo}
+        isLoading={loading}
+        error={error}
+        searchParams={searchParams}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        pageCount={pageCount}
+        handleSearch={handleSearch}
+      />
+      <AddProduct />
+    </>
   );
 };
 

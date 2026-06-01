@@ -5,7 +5,7 @@ import { getBrandsApi } from "../brandsApi";
 export const useGetBrands = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); 
 
   const fetchBrands = useCallback(async () => {
     setError(null);
