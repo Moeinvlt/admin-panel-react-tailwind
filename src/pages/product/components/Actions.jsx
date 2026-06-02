@@ -4,7 +4,7 @@ import { FaSitemap } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import ActionBtn from "../../../components/ActionBtn";
 
-const Actions = ({ rowData }) => {
+const Actions = ({ rowData, handleDelete }) => {
   return (
     <>
       <ActionBtn
@@ -21,6 +21,7 @@ const Actions = ({ rowData }) => {
         bgColor="bg-red-500"
         icon={<FaTrash />}
         iconColor="text-red-400"
+        onClick={() => handleDelete(rowData)}
       />
     </>
   );

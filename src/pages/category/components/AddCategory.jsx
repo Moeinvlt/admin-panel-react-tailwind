@@ -37,6 +37,7 @@ const AddCategory = ({ onSuccess }) => {
                 name="parent_id"
                 options={parents}
                 label="دسته والد"
+                firstItem="دسته والد را انتخواب کنید"
               />
             ) : null}
 

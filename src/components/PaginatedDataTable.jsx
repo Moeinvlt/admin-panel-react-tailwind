@@ -6,6 +6,7 @@ import { Toasty } from "../utils/customToast";
 import TableLoading from "./loading/TableLoading";
 import { FaExclamationTriangle } from "react-icons/fa";
 import PrevPageBtn from "./PrevPageBtn";
+import AddPageBtn from "./AddPageBtn";
 
 const PaginatedDataTable = ({
   tableData = [], // مقدار پیش‌فرض آرایه خالی
@@ -20,6 +21,8 @@ const PaginatedDataTable = ({
   setCurrentPage,
   searchParams = {}, // مقدار پیش‌فرض برای searchParams
   handleSearch = () => {}, // تابع پیش‌فرض خالی
+  addPageBtn = false,
+  addPagePath,
 }) => {
   const pageRange = 3;
   const [pages, setPages] = useState([]);
@@ -68,6 +71,8 @@ const PaginatedDataTable = ({
             <ModalToggleBtn />
           </div>
         )}
+
+        {addPageBtn && <AddPageBtn linkPath={addPagePath} />}
 
         {prevPageBtn ? (
           <div>

@@ -1,6 +1,8 @@
 import Checkbox from "./Checkbox";
 import File from "./File";
 import Input from "./Input";
+import MultiSelect from "./MultiSelect";
+import SearchableSelect from "./SearchableSelect";
 import Select from "./Select";
 import Textarea from "./Textarea";
 
@@ -16,6 +18,10 @@ const FormikControl = (props) => {
       return <Checkbox {...props} />;
     case "select":
       return <Select {...props} />;
+    case "multiSelect":
+      return <MultiSelect {...props} />;
+    case "searchableSelect":
+      return <SearchableSelect {...props} />;
     default:
       return null;
   }
