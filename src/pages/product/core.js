@@ -1,4 +1,6 @@
 import * as Yup from "yup";
+import { createProductApi } from "../../api/products/productsApi";
+import { Toasty } from "../../utils/customToast";
 
 export const initialValues = {
   category_ids: "",
@@ -18,14 +20,22 @@ export const initialValues = {
   discount: "",
 };
 
-export const onSubmit = async (values, actions) => {
-    console.log(values)
+export const onSubmit = async (values, actions, navigate) => {
+  try {
+    const res = await createProductApi(values);
+    console.log(res);
+    if (res.status === 201) {
+      Toasty("عملیات با موفقیت انجام شد", "success");
+      navigate(-1);
+    }
+  } catch (error) {
+    Toasty("خطایی رخ داده است", "error");
+  }
 };
 
 export const validationSchema = Yup.object({
-  category_ids: Yup.string()
-    .required("لطفا این قسمت را پر کنید"),
-    // .matches(/^[0-9\s-]+$/, "فقط ازاعداد و خط تیره استفاده شود"),
+  category_ids: Yup.string().required("لطفا این قسمت را پر کنید"),
+  // .matches(/^[0-9\s-]+$/, "فقط ازاعداد و خط تیره استفاده شود"),
   title: Yup.string()
     .required("لطفا این قسمت را پر کنید")
     .matches(

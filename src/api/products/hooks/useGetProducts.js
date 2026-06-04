@@ -47,6 +47,7 @@ export const useGetProducts = () => {
 
   return {
     data,
+    setData,
     loading,
     error,
     searchChar,

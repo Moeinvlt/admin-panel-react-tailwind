@@ -120,7 +120,7 @@ const SearchableSelect = ({
       {/* لیست کشویی با جستجو */}
       {isOpen && (
         <div className="relative">
-          <div className="absolute top-0 left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50">
+          <div className="absolute top-0 left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-20">
             {/* جستجو */}
             <div className="p-2 border-b border-gray-200 dark:border-gray-700">
               <div className="relative">

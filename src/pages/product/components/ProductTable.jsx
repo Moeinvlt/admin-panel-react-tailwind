@@ -19,7 +19,7 @@ const ProductTable = () => {
     setCurrentPage,
     pageCount,
     handleSearch,
-    refetch,
+    setData,
   } = useGetProducts();
 
   const dataInfo = [
@@ -54,17 +54,18 @@ const ProductTable = () => {
       confirmButtonText: "بله",
     });
 
-    if (result.isConfirmed) {
-      try {
-        const res = await deleteProductApi(product.id);
-        if (res.status === 200) {
-          refetch();
-          Toasty(res.data.message, "success");
-        }
-      } catch (err) {
-        Toasty("مشکلی در انجام عملیات رخ داده است", "error");
+  if (result.isConfirmed) {
+    try {
+      const res = await deleteProductApi(product.id);
+      if (res.status === 200) {
+        // حذف از state محلی
+        setData(prevData => prevData.filter(item => item.id !== product.id));
+        Toasty(res.data.message, "success");
       }
+    } catch (err) {
+      Toasty("مشکلی در انجام عملیات رخ داده است", "error");
     }
+  }
   };
 
   return (

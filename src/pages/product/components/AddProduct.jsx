@@ -8,15 +8,25 @@ import { ErrorMessage, Form, Formik } from "formik";
 import { initialValues, onSubmit, validationSchema } from "../core";
 import FormikControl from "../../../components/form/FormikControl";
 import { useParentsCategory } from "../../../api/category/hooks/useParentsCategory";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getCategoriesApi } from "../../../api/category/categoryApi";
 import TableLoading from "../../../components/loading/TableLoading";
 import FormErrorMessage from "../../../components/form/FormErrorMessage";
 import SearchableSelect from "../../../components/form/SearchableSelect";
+import { getBrandsApi } from "../../../api/brands/brandsApi";
+import { getColorsApi } from "../../../api/colors/colorsApi";
+import { getGuaranteesApi } from "../../../api/guarantees/GuaranteesApi";
+import { useNavigate } from "react-router";
 
 const AddProduct = () => {
   const { parents } = useParentsCategory();
-  const [mainCategories, setMainCategories] = useState(null);
+  const [mainCategories, setMainCategories] = useState([]);
+
+  const [brands, setBrands] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [guarantees, setGuarantees] = useState([]);
+
+  const navigate = useNavigate()
 
   const handleSetMainCategories = async (value) => {
     setMainCategories("waiting");
@@ -34,6 +44,43 @@ const AddProduct = () => {
     }
   };
 
+  const getAllBrands = async () => {
+    const res = await getBrandsApi();
+
+    res.status === 200 &&
+      setBrands(
+        res.data.data.map((d) => {
+          return { id: d.id, value: d.original_name };
+        }),
+      );
+  };
+
+  const getAllColors = async () => {
+    const res = await getColorsApi();
+
+    setColors(
+      res.data.data.map((d) => {
+        return { id: d.id, value: d.title };
+      }),
+    );
+  };
+
+  const getAllGuarantees = async () => {
+    const res = await getGuaranteesApi();
+
+    setGuarantees(
+      res.data.data.map((d) => {
+        return { id: d.id, value: d.title };
+      }),
+    );
+  };
+
+  useEffect(() => {
+    getAllBrands();
+    getAllColors();
+    getAllGuarantees()
+  }, []);
+
   return (
     <>
       <h3 className="text-center defaultText text-2xl">افزودن عنوان جدید</h3>
@@ -42,7 +89,7 @@ const AddProduct = () => {
       </div>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values, actions) => onSubmit(values, actions)}
+        onSubmit={(values, actions) => onSubmit(values, actions, navigate)}
         validationSchema={validationSchema}
       >
         {(formik) => (
@@ -57,210 +104,126 @@ const AddProduct = () => {
                 handleOnChange={handleSetMainCategories}
               />
 
-              {mainCategories === "waiting" ? (
-                <TableLoading />
-              ) : mainCategories != null ? (
-                <SearchableSelect
-                  name="category_ids"
-                  options={mainCategories}
-                  label="دسته‌ها"
-                  resultType="string" // یا "array"
-                  firstItem="دسته مورد نظر را انتخاب کنید"
-                  className=""
-                />
-              ) : null}
+              {mainCategories === "waiting" ? <TableLoading /> : null}
+              <SearchableSelect
+                name="category_ids"
+                options={
+                  typeof mainCategories == "object" ? mainCategories : []
+                }
+                label="دسته‌ها"
+                resultType="string" // یا "array"
+                firstItem="دسته مورد نظر را انتخاب کنید"
+                className=""
+              />
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                  عنوان
-                </span>
-                <input
-                  type="text"
-                  name=""
-                  className="w-full defaultText p-2 outline-none"
-                  placeholder="عنوان محصول"
-                />
-              </div>
+              <FormikControl
+                control="input"
+                type="text"
+                name="title"
+                label="عنوان"
+                placeholder="فقط از حروف و اعداد استفاده کنید"
+              />
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                  قیمت
-                </span>
-                <input
-                  type="text"
-                  name=""
-                  className="w-full defaultText p-2 outline-none"
-                  placeholder="قیمت محصول"
-                />
-              </div>
+              <FormikControl
+                control="input"
+                type="number"
+                name="price"
+                label="قیمت *"
+                placeholder="فقط از اعداد استفاده کنید(تومان)"
+              />
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                  وزن
-                </span>
-                <input
-                  type="text"
-                  name=""
-                  className="w-full defaultText p-2 outline-none"
-                  placeholder="وزن محصول"
-                />
-              </div>
+              <FormikControl
+                control="input"
+                type="number"
+                name="weight"
+                label="وزن"
+                placeholder="فقط از اعداد استفاده کنید(گرم)"
+              />
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                  برند
-                </span>
-                <input
-                  type="text"
-                  name=""
-                  className="w-full defaultText p-2 outline-none"
-                  placeholder="قسمتی از نام برند را وارد کنید"
-                />
-                <button
-                  type="button"
-                  className="text-green-500 bg-green-500/20 px-2 cursor-pointer"
-                >
-                  <FaPlus />
-                </button>
-              </div>
+              <FormikControl
+                control="select"
+                name="brand_id"
+                firstItem="برند خود را انتخواب کنید"
+                options={brands}
+                label="برند"
+              />
 
-              <div className="flex flex-col gap-2">
-                <div className="customBox flex w-full max-w-130 mt-5">
-                  <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                    رنگ
-                  </span>
-                  <select
-                    name=""
-                    className="w-full defaultText p-2 outline-none appearance-none bg-inherit"
-                  >
-                    <option value="1" className="">
-                      انتخاب رنگ
-                    </option>
-                    <option value="1" className="">
-                      رنگ شماره یک
-                    </option>
-                  </select>
-                </div>
-                <button
-                  type="button"
-                  className="text-red-500 bg-red-500/20 w-8 py-2 flex justify-center rounded-full cursor-pointer"
-                >
-                  <HiX />
-                </button>
-              </div>
+              <FormikControl
+                control="searchableSelect"
+                name="color_ids"
+                firstItem="رنگ مورد نظر را انتخواب کنید"
+                options={colors}
+                label="رنگ"
+              />
 
-              <div className="flex flex-col gap-3">
-                <div className="customBox flex w-full max-w-130 mt-5">
-                  <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                    گارانتی
-                  </span>
-                  <select
-                    name=""
-                    className="w-full defaultText p-2 outline-none appearance-none bg-inherit"
-                  >
-                    <option value="1" className="">
-                      انتخاب گارانتی
-                    </option>
-                    <option value="1" className="">
-                      گارانتی شماره یک
-                    </option>
-                  </select>
-                </div>
-                <div className="flex gap-2">
-                  <span className="bg-sky-400/20 rounded-full text-white p-2 flex items-center gap-1">
-                    <button
-                      type="button"
-                      className="text-red-500 cursor-pointer"
-                    >
-                      <HiX />
-                    </button>{" "}
-                    دسته فلان
-                  </span>
-                  <span className="bg-sky-400/20 rounded-full text-white p-2 flex items-center gap-1">
-                    <button
-                      type="button"
-                      className="text-red-500 cursor-pointer"
-                    >
-                      <HiX />
-                    </button>{" "}
-                    دسته فلان
-                  </span>
-                </div>
-              </div>
+              <FormikControl
+                control="searchableSelect"
+                name="guarantee_ids"
+                firstItem="گارانتی مورد نظر را انتخواب کنید"
+                options={guarantees}
+                label="گارانتی"
+              />
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 p-2 flex items-center justify-center">
-                  توضیحات
-                </span>
-                <textarea
-                  type="text"
-                  name=""
-                  className="w-full defaultText p-2 resize-none h-30 outline-none"
-                  placeholder="توضیحات"
-                />
-              </div>
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 p-2 flex items-center justify-center">
-                  تصویر
-                </span>
-                <input
-                  type="file"
-                  name=""
-                  className="w-full defaultText p-2 outline-none"
-                />
-              </div>
+              <FormikControl
+                control="textarea"
+                name="descriptions"
+                label="توضیحات"
+                placeholder="فقط از حروف و اعداد استفاده کنید"
+              />
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                  توضیح تصویر
-                </span>
-                <input
-                  type="text"
-                  name=""
-                  className="w-full defaultText p-2 outline-none"
-                  placeholder="توضیحات تصویر"
-                />
-              </div>
+              <FormikControl
+                control="textarea"
+                name="short_descriptions"
+                label="توضیحات کوتاه"
+                placeholder="فقط از حروف و اعداد استفاده کنید"
+              />
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                  تگ ها
-                </span>
-                <input
-                  type="text"
-                  name=""
-                  className="w-full defaultText p-2 outline-none"
-                  placeholder="با - از هم جدا شوند"
-                />
-              </div>
+              <FormikControl
+                control="textarea"
+                name="cart_descriptions"
+                label="توضیحات سبد خرید"
+                placeholder="فقط از حروف و اعداد استفاده کنید"
+              />
 
-              <div className="customBox flex w-full max-w-130 mt-5">
-                <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
-                  موجودی
-                </span>
-                <input
-                  type="number"
-                  name=""
-                  className="w-full defaultText p-2 outline-none"
-                  placeholder="فقط عدد"
-                />
-              </div>
+              <FormikControl
+                control="file"
+                name="image"
+                label="تصویر"
+                placeholder="تصویر"
+              />
 
-              {/* <div className="mt-5">
-            <label htmlFor="formCheck" className="flex gap-2">
-              وضعیت فعال
-              <div className="flex w-5 h-5 border border-gray-500 rounded-[3px] cursor-pointer">
-                <input
-                  type="checkbox"
-                  name=""
-                  id="formCheck"
-                  className="sr-only w-full h-full peer"
-                />
-                <FaCheck className="text-green-500 hidden peer-checked:inline" />
-              </div>
-            </label>
-          </div> */}
+              <FormikControl
+                control="input"
+                type="text"
+                name="alt_image"
+                label="توضیح تصویر"
+                placeholder="فقط از حروف و اعداد استفاده کنید"
+              />
+
+              <FormikControl
+                control="input"
+                type="text"
+                name="keywords"
+                label="کلمات کیلیدی"
+                placeholder="مثلا: تست1-تست2-تست3"
+              />
+
+              <FormikControl
+                control="input"
+                type="number"
+                name="stock"
+                label="موجودی"
+                placeholder="فقط از اعداد استفاده کنید"
+              />
+
+              <FormikControl
+                control="input"
+                type="number"
+                name="discount"
+                label="درصد تخفیف"
+                placeholder="فقط از اعداد استفاده کنید(درصد)"
+              />
 
               <SubmitBtn />
             </Form>
