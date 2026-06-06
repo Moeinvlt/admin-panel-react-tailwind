@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { createProductApi } from "../../api/products/productsApi";
+import { createProductApi, editProductApi } from "../../api/products/productsApi";
 import { Toasty } from "../../utils/customToast";
 
 export const initialValues = {
@@ -20,13 +20,21 @@ export const initialValues = {
   discount: "",
 };
 
-export const onSubmit = async (values, actions, navigate) => {
+export const onSubmit = async (values, actions, navigate, productToEdit) => {
   try {
-    const res = await createProductApi(values);
-    console.log(res);
-    if (res.status === 201) {
-      Toasty("عملیات با موفقیت انجام شد", "success");
-      navigate(-1);
+    if (productToEdit) {
+      const res = await editProductApi(productToEdit.id, values)
+      if (res.status === 200) {
+        Toasty(res.data.message, 'seccess')
+        navigate(-1);
+      }
+    } else{
+      const res = await createProductApi(values);
+      if (res.status === 201) {
+        Toasty(res.data.message, 'seccess')
+        navigate(-1);
+      }
+
     }
   } catch (error) {
     Toasty("خطایی رخ داده است", "error");

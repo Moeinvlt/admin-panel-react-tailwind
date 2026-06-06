@@ -11,6 +11,7 @@ const SearchableSelect = ({
   label,
   firstItem = "انتخاب کنید...",
   className = "",
+  initialItems,
 }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +40,10 @@ const SearchableSelect = ({
     const initialSelected = options.filter((opt) => ids.includes(opt.id));
     setSelectedItems(initialSelected);
   }, [formik.values, name, options, resultType]);
+
+  useEffect(() => {
+    setSelectedItems(initialItems)
+  }, [initialItems])
 
   // بستن لیست با کلیک بیرون
   useEffect(() => {

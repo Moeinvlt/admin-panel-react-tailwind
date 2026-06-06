@@ -7,7 +7,6 @@ import PrevPageBtn from "../../../components/PrevPageBtn";
 import { ErrorMessage, Form, Formik } from "formik";
 import { initialValues, onSubmit, validationSchema } from "../core";
 import FormikControl from "../../../components/form/FormikControl";
-import { useParentsCategory } from "../../../api/category/hooks/useParentsCategory";
 import { useEffect, useState } from "react";
 import { getCategoriesApi } from "../../../api/category/categoryApi";
 import TableLoading from "../../../components/loading/TableLoading";
@@ -16,17 +15,37 @@ import SearchableSelect from "../../../components/form/SearchableSelect";
 import { getBrandsApi } from "../../../api/brands/brandsApi";
 import { getColorsApi } from "../../../api/colors/colorsApi";
 import { getGuaranteesApi } from "../../../api/guarantees/GuaranteesApi";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const AddProduct = () => {
-  const { parents } = useParentsCategory();
+  const [parentCategories, setparentCategories] = useState([]);
   const [mainCategories, setMainCategories] = useState([]);
 
   const [brands, setBrands] = useState([]);
   const [colors, setColors] = useState([]);
   const [guarantees, setGuarantees] = useState([]);
 
-  const navigate = useNavigate()
+  const [selectedCategories, setSelectedCategories] = useState([]); // used in editting
+  const [selectedColors, setSelectedColors] = useState([]); // used in editting
+  const [selectedGuarantees, setSelectedGuarantees] = useState([]); // used in editting
+
+  const location = useLocation();
+  const productToEdit = location.state?.productToEdit;
+
+  const [reInitialValues, setReInitialValues] = useState();
+
+  const navigate = useNavigate();
+
+  const getAllParentCategories = async () => {
+    const res = await getCategoriesApi();
+    if (res.status === 200) {
+      setparentCategories(
+        res.data.data.map((d) => {
+          return { id: d.id, value: d.title };
+        }),
+      );
+    }
+  };
 
   const handleSetMainCategories = async (value) => {
     setMainCategories("waiting");
@@ -75,29 +94,88 @@ const AddProduct = () => {
     );
   };
 
+  const setInitialSelectedValues = () => {
+    if (productToEdit) {
+      setSelectedCategories(
+        productToEdit.categories.map((c) => {
+          return { id: c.id, value: c.title };
+        }),
+      );
+      setSelectedColors(
+        productToEdit.colors.map((c) => {
+          return { id: c.id, value: c.title };
+        }),
+      );
+      setSelectedGuarantees(
+        productToEdit.guarantees.map((c) => {
+          return { id: c.id, value: c.title };
+        }),
+      );
+    }
+  };
+
   useEffect(() => {
-    getAllBrands();
-    getAllColors();
-    getAllGuarantees()
-  }, []);
+    const loadData = async () => {
+      await getAllParentCategories();
+      await getAllBrands();
+      await getAllColors();
+      await getAllGuarantees();
+      setInitialSelectedValues();
+
+      for (const key in productToEdit) {
+        if (productToEdit[key] === null) productToEdit[key] = "";
+      }
+
+      if (productToEdit) {
+        // ابتدا اگر parent_id دارد، mainCategories را بارگذاری کن
+        if (productToEdit.parent_id) {
+          await handleSetMainCategories(productToEdit.parent_id);
+        }
+        // سپس reInitialValues را تنظیم کن
+        setReInitialValues({
+          ...productToEdit,
+          parentCategories: productToEdit.parent_id || "",
+          category_ids: productToEdit.categories.map((c) => c.id).join("-"),
+          color_ids: productToEdit.colors.map((c) => c.id).join("-"),
+          guarantee_ids: productToEdit.guarantees.map((g) => g.id).join("-"),
+          image: "",
+        });
+      } else {
+        setReInitialValues(null);
+      }
+    };
+    loadData();
+  }, [productToEdit]);
 
   return (
     <>
-      <h3 className="text-center defaultText text-2xl">افزودن عنوان جدید</h3>
+      <h3 className="text-center defaultText text-2xl">
+        {productToEdit ? (
+          <>
+            ویرایش محصول:
+            <span className="text-sky-400">{productToEdit.title}</span>
+          </>
+        ) : (
+          "افزودن عنوان جدید"
+        )}
+      </h3>
       <div className="text-end pl-4">
         <PrevPageBtn />
       </div>
       <Formik
-        initialValues={initialValues}
-        onSubmit={(values, actions) => onSubmit(values, actions, navigate)}
+        initialValues={reInitialValues || initialValues}
+        onSubmit={(values, actions) =>
+          onSubmit(values, actions, navigate, productToEdit)
+        }
         validationSchema={validationSchema}
+        enableReinitialize
       >
         {(formik) => (
           <div className="w-full flex justify-center">
             <Form>
               <FormikControl
                 control="select"
-                options={parents}
+                options={parentCategories}
                 name="parentCategories"
                 label="دسته والد"
                 firstItem="دسته مورد نظر را انتخواب کنید"
@@ -105,7 +183,8 @@ const AddProduct = () => {
               />
 
               {mainCategories === "waiting" ? <TableLoading /> : null}
-              <SearchableSelect
+              <FormikControl
+                control="searchableSelect"
                 name="category_ids"
                 options={
                   typeof mainCategories == "object" ? mainCategories : []
@@ -113,7 +192,7 @@ const AddProduct = () => {
                 label="دسته‌ها"
                 resultType="string" // یا "array"
                 firstItem="دسته مورد نظر را انتخاب کنید"
-                className=""
+                initialItems={selectedCategories}
               />
 
               <FormikControl
@@ -154,6 +233,7 @@ const AddProduct = () => {
                 firstItem="رنگ مورد نظر را انتخواب کنید"
                 options={colors}
                 label="رنگ"
+                initialItems={selectedColors}
               />
 
               <FormikControl
@@ -162,8 +242,8 @@ const AddProduct = () => {
                 firstItem="گارانتی مورد نظر را انتخواب کنید"
                 options={guarantees}
                 label="گارانتی"
+                initialItems={selectedGuarantees}
               />
-
 
               <FormikControl
                 control="textarea"
@@ -186,12 +266,14 @@ const AddProduct = () => {
                 placeholder="فقط از حروف و اعداد استفاده کنید"
               />
 
-              <FormikControl
-                control="file"
-                name="image"
-                label="تصویر"
-                placeholder="تصویر"
-              />
+              {!productToEdit && (
+                <FormikControl
+                  control="file"
+                  name="image"
+                  label="تصویر"
+                  placeholder="تصویر"
+                />
+              )}
 
               <FormikControl
                 control="input"
