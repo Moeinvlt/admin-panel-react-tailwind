@@ -1,7 +1,5 @@
-import { FaList, FaPlus } from "react-icons/fa";
+import { FaList, FaPlus, FaTrash, FaImages } from "react-icons/fa";
 import { FiEdit2 } from "react-icons/fi";
-import { FaSitemap } from "react-icons/fa";
-import { FaTrash } from "react-icons/fa";
 import ActionBtn from "../../../components/ActionBtn";
 import { useNavigate } from "react-router";
 
@@ -21,6 +19,12 @@ const Actions = ({ rowData, handleDelete }) => {
         icon={<FaList />}
         iconColor="text-green-500"
         onClick={() => navigate('/products/set-attr', {state: {selectedProduct: rowData}})}
+      />
+      <ActionBtn
+        bgColor="bg-sky-400"
+        icon={<FaImages />}
+        iconColor="text-sky-400"
+        onClick={() => navigate('/products/gallery', {state: {selectedProduct: rowData}})}
       />
       <ActionBtn
         bgColor="bg-red-500"
