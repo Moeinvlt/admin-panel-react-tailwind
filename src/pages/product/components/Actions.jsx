@@ -20,6 +20,7 @@ const Actions = ({ rowData, handleDelete }) => {
         bgColor="bg-green-500"
         icon={<FaList />}
         iconColor="text-green-500"
+        onClick={() => navigate('/products/set-attr', {state: {selectedProduct: rowData}})}
       />
       <ActionBtn
         bgColor="bg-red-500"
