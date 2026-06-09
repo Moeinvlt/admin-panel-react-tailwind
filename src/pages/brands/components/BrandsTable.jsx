@@ -17,7 +17,7 @@ import { Toasty } from "../../../utils/customToast";
 
 const BrandsTable = () => {
   const { data, setData, loading, error } = useGetBrands();
-  const { modalOpen, setModalOpen } = useContext(AdminContext);
+  const {setModalOpen} = useContext(AdminContext);
   const [brandToEdit, setBrandToEdit] = useState(null);
 
   const dataInfo = [
@@ -85,12 +85,6 @@ const BrandsTable = () => {
   const handleOnSuccess = () => {
     setModalOpen(false);
   };
-
-  useEffect(() => {
-    if (!modalOpen) {
-      setBrandToEdit(null);
-    }
-  }, [modalOpen]);
 
   return (
     <>

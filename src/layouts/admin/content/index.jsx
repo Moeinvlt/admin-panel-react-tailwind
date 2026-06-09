@@ -15,6 +15,7 @@ import AddAttributes from "../../../pages/category/components/attrs/AddAttribute
 import AddProduct from "../../../pages/product/components/AddProduct";
 import SetProductAttr from "../../../pages/product/components/setAttr/SetProductAtrr";
 import ProductGallery from "../../../pages/product/components/gallery/ProductGallery";
+import AddDiscount from "../../../pages/discounts/components/AddDiscount";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -41,7 +42,9 @@ const Content = () => {
         <Route path="/brands" element={<Brands />} />
         <Route path="/guarantees" element={<Guarantees />} />
         <Route path="/colors" element={<Colors />} />
-        <Route path="/discounts" element={<Discounts />} />
+        <Route path="/discounts" element={<Discounts />}>
+          <Route path="add-discount-code" element={<AddDiscount/>}/>
+        </Route>
 
         <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Navigate to="/404" replace />} />

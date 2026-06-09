@@ -15,14 +15,16 @@ const Actions = ({ rowData, setGuaranteeToEdit, handleDelete }) => {
   return (
     <>
       <ActionBtn
-        bgColor="bg-purple-500"
+        actionTitle="ویرایش گارانتی"
+        color="purple"
         iconColor="text-purple-500"
         icon={<FiEdit2 />}
         onClick={handleOpenOnEdit}
       />
 
       <ActionBtn
-        bgColor="bg-red-500"
+        actionTitle="حذف گارانتی"
+        color="red"
         iconColor="text-red-400"
         icon={<FaTrash />}
         onClick={() =>  handleDelete(rowData)}

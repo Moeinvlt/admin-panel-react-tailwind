@@ -1,4 +1,5 @@
 import Checkbox from "./Checkbox";
+import DatePicker from "./Date";
 import File from "./File";
 import Input from "./Input";
 import MultiSelect from "./MultiSelect";
@@ -22,6 +23,8 @@ const FormikControl = (props) => {
       return <MultiSelect {...props} />;
     case "searchableSelect":
       return <SearchableSelect {...props} />;
+    case "date":
+      return <DatePicker {...props} />;
     default:
       return null;
   }

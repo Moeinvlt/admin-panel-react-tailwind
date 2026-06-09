@@ -8,17 +8,15 @@ const GalleryActions = ({ gallery, handleSetMainImage, handleDeleteImage }) => {
       {!gallery.is_main ? (
         <ActionBtn
           icon={<RiImageCircleAiFill />}
-          iconColor="text-green-500"
-          bgColor="bg-green-500"
-          title="انتخاب به عنوان اصلی"
+          color="green"
+          iconColor="text-green-500"          bgColor="bg-green-500"
           onClick={() => handleSetMainImage(gallery.id)}
         />
       ) : null}
       <ActionBtn
         icon={<FaTrash />}
         iconColor="text-red-400"
-        bgColor="bg-red-500"
-        title="حذف این تصویر"
+        color="red"
         onClick={() => handleDeleteImage(gallery.id)}
       />
     </>

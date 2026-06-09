@@ -24,7 +24,8 @@ const Actions = ({ rowData, handleDelete }) => {
     <>
       {!params.categoryId ? (
         <ActionBtn
-          bgColor="bg-sky-500"
+          actionTitle="زیر مجموعه ها"
+          color="blue"
           iconColor="text-sky-500"
           icon={<FaSitemap />}
           onClick={() => {
@@ -35,14 +36,16 @@ const Actions = ({ rowData, handleDelete }) => {
         />
       ) : null}
       <ActionBtn
-        bgColor="bg-purple-500"
+        actionTitle="ویرایش گروه محصول"
+        color="purple"
         iconColor="text-purple-500"
         icon={<FiEdit2 />}
         onClick={handleOnOpen}
       />
       {params.categoryId ? (
         <ActionBtn
-          bgColor="bg-green-500"
+          actionTitle="ویژگی های دسته بندی"
+          color="green"
           iconColor="text-green-500"
           icon={<FaReceipt />}
           onClick={() =>
@@ -55,7 +58,8 @@ const Actions = ({ rowData, handleDelete }) => {
         />
       ) : null}
       <ActionBtn
-        bgColor="bg-red-500"
+        actionTitle="حذف گروه محصول"
+        color="red"
         iconColor="text-red-400"
         icon={<FaTrash />}
         onClick={() => handleDelete(rowData)}

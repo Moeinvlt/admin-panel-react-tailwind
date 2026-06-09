@@ -4,7 +4,7 @@ import { AdminContext } from "../context/AdminContextContainer";
 import { HiX } from "react-icons/hi";
 import { CategoryContext } from "../context/CategoryContext";
 
-const Modal = ({ children, fullScreen=true, title }) => {
+const Modal = ({ children, fullScreen=true, title, customCloseFnc }) => {
   const { modalOpen, setModalOpen } = useContext(AdminContext);
   const { setEditId } = useContext(CategoryContext);
 
@@ -34,7 +34,7 @@ const Modal = ({ children, fullScreen=true, title }) => {
           <button
             type="button"
             className="text-red-500 hover:text-red-600 cursor-pointer text-2xl"
-            onClick={handleOnClose}
+            onClick={customCloseFnc ? customCloseFnc : handleOnClose}
           >
             <HiX />
           </button>

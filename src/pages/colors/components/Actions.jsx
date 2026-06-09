@@ -15,14 +15,16 @@ const Actions = ({ rowData, setColorToEdit, handleDelete }) => {
   return (
     <>
       <ActionBtn
-        bgColor="bg-purple-500"
+        actionTitle="ویرایش رنگ"
+        color="purple"
         iconColor="text-purple-500"
         icon={<FiEdit2 />}
         onClick={handleOnOpen}
       />
 
       <ActionBtn
-        bgColor="bg-red-500"
+        actionTitle="حذف رنگ"
+        color="red"
         iconColor="text-red-400"
         icon={<FaTrash />}
         onClick={() => handleDelete(rowData)}

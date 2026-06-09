@@ -16,3 +16,7 @@ export const editProductApi = (productId, data)=>{
 export const deleteProductApi = (productId)=>{
   return httpService(`/admin/products/${productId}`, "delete");
 }
+
+export const getProductTitlesApi = () => {
+  return httpService(`/admin/products/all_titles`, "get");
+};

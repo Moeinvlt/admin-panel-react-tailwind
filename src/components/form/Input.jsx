@@ -5,7 +5,7 @@ const Input = ({ type, name, label, placeholder }) => {
   return (
     <>
       <div className="customBox flex w-full max-w-130 mt-5">
-        <label className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
+        <label className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center text-[14px]">
           {label}
         </label>
         <FastField

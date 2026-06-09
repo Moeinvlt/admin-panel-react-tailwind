@@ -9,25 +9,29 @@ const Actions = ({ rowData, handleDelete }) => {
   return (
     <>
       <ActionBtn
-        bgColor="bg-purple-500"
+        actionTitle="ویرایش محصول"
+        color="purple"
         icon={<FiEdit2 />}
         iconColor="text-purple-500"
         onClick={() => navigate('/products/add-product', {state: {productToEdit:rowData}})}
       />
       <ActionBtn
-        bgColor="bg-green-500"
+        actionTitle="ویژگی ها"
+        color="green"
         icon={<FaList />}
         iconColor="text-green-500"
         onClick={() => navigate('/products/set-attr', {state: {selectedProduct: rowData}})}
       />
       <ActionBtn
-        bgColor="bg-sky-400"
+        actionTitle="گالری تصاویر"
+        color="blue"
         icon={<FaImages />}
         iconColor="text-sky-400"
         onClick={() => navigate('/products/gallery', {state: {selectedProduct: rowData}})}
       />
       <ActionBtn
-        bgColor="bg-red-500"
+        actionTitle="حذف محصول"
+        color="red"
         icon={<FaTrash />}
         iconColor="text-red-400"
         onClick={() => handleDelete(rowData)}

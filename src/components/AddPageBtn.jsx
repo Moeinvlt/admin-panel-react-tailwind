@@ -1,5 +1,6 @@
 import { FaPlus } from "react-icons/fa";
 import { NavLink } from "react-router";
+import { AdminContext } from "../context/AdminContextContainer";
 
 const AddPageBtn = ({ linkPath }) => {
   return (

@@ -14,14 +14,16 @@ const Actions = ({ rowData, setBrandToEdit, handleDeleteBrand }) => {
   return (
     <>
       <ActionBtn
-        bgColor="bg-purple-500"
+        actionTitle="ویرایش برند"
+        color="purple"
         iconColor="text-purple-500"
         onClick={handleOpenOnEdit}
         icon={<FiEdit2 />}
       />
 
       <ActionBtn
-        bgColor="bg-red-500"
+        actionTitle="حذف برند"
+        color="red"
         iconColor="text-red-400"
         onClick={() => handleDeleteBrand(rowData)}
         icon={<FaTrash />}

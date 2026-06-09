@@ -17,6 +17,7 @@ const DataTable = ({
   error,
   modalBtn = true,
   prevPageBtn = false,
+  addPageBtn,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -91,6 +92,12 @@ const DataTable = ({
           </div>
         )}
 
+        {addPageBtn && (
+          <div>
+            {addPageBtn}
+          </div>
+        )}
+
         {prevPageBtn ? (
           <div>
             <PrevPageBtn />
@@ -143,7 +150,7 @@ const DataTable = ({
 
               <tbody>
                 {paginatedData.map((d) => (
-                  <tr className="border-t border-border-light dark:border-border-dark hover:bg-gray-300/60 hover:dark:bg-gray-900/80">
+                  <tr key={d.id} className="border-t border-border-light dark:border-border-dark hover:bg-gray-300/60 hover:dark:bg-gray-900/80">
                     {dataInfo.map((i) => (
                       <td
                         key={i.field + "_" + d.id}
@@ -191,7 +198,7 @@ const DataTable = ({
                   >
                     {page}
                   </button>
-                )
+                ),
               )}
 
               <button

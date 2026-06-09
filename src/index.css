@@ -113,6 +113,20 @@
     background: none;
     padding: 0;
   }
+
+  .actionBtnTitle::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    bottom: -12px;
+    border-left: 6px solid transparent; 
+    border-right: 6px solid transparent; 
+    border-top: 12px solid #030712;      
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
 }
 
 input[type="color"]::-webkit-color-swatch-wrapper {
