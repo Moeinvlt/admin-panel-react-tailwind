@@ -70,7 +70,7 @@ const Sidebar = () => {
           <SidebarGroupTitle title="سفارشات و سبد" />
           {/* tlte */}
 
-          <SidebarItem title="مدیریت سبد ها" path="/" icon={<FaShoppingBasket />} />
+          <SidebarItem title="مدیریت سبد ها" path="/carts" icon={<FaShoppingBasket />} />
 
           <SidebarItem title="مدیریت سفارشات" path="/" icon={<FaLuggageCart />} />
 
