@@ -1,7 +1,4 @@
-import { FaSearch } from "react-icons/fa";
-import ModalToggleBtn from "../../components/ModalToggleBtn";
 import GuaranteesTable from "./components/GuaranteesTable";
-import AddGuarantee from "./components/AddGuarantee";
 
 const Guarantees = () => {
   return (

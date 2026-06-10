@@ -84,7 +84,7 @@ const Sidebar = () => {
 
           <SidebarItem title="نقش ها" path="/" icon={<FaUserTag />} />
 
-          <SidebarItem title="مجوز ها" path="/" icon={<FaShieldAlt />} />
+          <SidebarItem title="مجوز ها" path="/permissions" icon={<FaShieldAlt />} />
 
           {/* tlte */}
           <SidebarGroupTitle title="ارتباتاط" />

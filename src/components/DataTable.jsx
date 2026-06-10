@@ -46,6 +46,39 @@ const DataTable = ({
 
   const totalPages = Math.ceil(filteredData.length / limit);
 
+  const visiblePages = useMemo(() => {
+    if (totalPages <= 1) return [];
+
+    const maxVisible = 3// حداکثر تعداد دکمه‌های میانی
+    const pages = [];
+
+    if (totalPages <= maxVisible + 2) {
+      // اگر تعداد کل صفحات کم است، همه را نشان بده
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      // همیشه صفحه اول
+      pages.push(1);
+
+      let start = Math.max(2, currentPage - Math.floor(maxVisible / 2));
+      let end = Math.min(totalPages - 1, start + maxVisible - 1);
+
+      // تنظیم مجدد اگر به انتها نزدیک شدیم
+      if (end === totalPages - 1) start = Math.max(2, end - maxVisible + 1);
+      else if (start === 2)
+        end = Math.min(totalPages - 1, start + maxVisible - 1);
+
+      if (start > 2) pages.push("...");
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (end < totalPages - 1) pages.push("...");
+
+      // صفحه آخر
+      pages.push(totalPages);
+    }
+
+    // حذف مقادیر تکراری (در صورت بروز)
+    return pages.filter((v, i, a) => a.indexOf(v) === i);
+  }, [totalPages, currentPage]);
+
   const goToNextPage = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
   };
@@ -92,11 +125,7 @@ const DataTable = ({
           </div>
         )}
 
-        {addPageBtn && (
-          <div>
-            {addPageBtn}
-          </div>
-        )}
+        {addPageBtn && <div>{addPageBtn}</div>}
 
         {prevPageBtn ? (
           <div>
@@ -150,7 +179,10 @@ const DataTable = ({
 
               <tbody>
                 {paginatedData.map((d) => (
-                  <tr key={d.id} className="border-t border-border-light dark:border-border-dark hover:bg-gray-300/60 hover:dark:bg-gray-900/80">
+                  <tr
+                    key={d.id}
+                    className="border-t border-border-light dark:border-border-dark hover:bg-gray-300/60 hover:dark:bg-gray-900/80"
+                  >
                     {dataInfo.map((i) => (
                       <td
                         key={i.field + "_" + d.id}
@@ -186,10 +218,16 @@ const DataTable = ({
                 <FaAngleRight />
               </button>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
+              {visiblePages.map((page, idx) =>
+                page === "..." ? (
+                  <span
+                    key={`dots-${idx}`}
+                    className="w-8 h-8 flex justify-center items-center text-gray-500"
+                  >
+                    ...
+                  </span>
+                ) : (
                   <button
-                    type="button"
                     key={page}
                     onClick={() => goToPage(page)}
                     className={`cursor-pointer border-2 border-gray-500 text-gray-500 dark:text-white ${
