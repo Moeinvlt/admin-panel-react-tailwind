@@ -82,7 +82,7 @@ const Sidebar = () => {
 
           <SidebarItem title="مشاهده کاربران" path="/" icon={<FaUsers />} />
 
-          <SidebarItem title="نقش ها" path="/" icon={<FaUserTag />} />
+          <SidebarItem title="نقش ها" path="/roles" icon={<FaUserTag />} />
 
           <SidebarItem title="مجوز ها" path="/permissions" icon={<FaShieldAlt />} />
 

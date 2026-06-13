@@ -18,6 +18,8 @@ import ProductGallery from "../../../pages/product/components/gallery/ProductGal
 import AddDiscount from "../../../pages/discounts/components/AddDiscount";
 import Carts from "../../../pages/carts/Carts";
 import Permissions from "../../../pages/permissions/Permissions";
+import Roles from "../../../pages/roles/Roles";
+import AddRole from "../../../pages/roles/components/AddRole";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -45,11 +47,15 @@ const Content = () => {
         <Route path="/guarantees" element={<Guarantees />} />
         <Route path="/colors" element={<Colors />} />
         <Route path="/discounts" element={<Discounts />}>
-          <Route path="add-discount-code" element={<AddDiscount/>}/>
+          <Route path="add-discount-code" element={<AddDiscount />} />
         </Route>
-        <Route path="/permissions" element={<Permissions/>} />
+        <Route path="/permissions" element={<Permissions />} />
 
-        <Route path="/carts" element={<Carts/>} />
+        <Route path="/roles" element={<Roles />}>
+          <Route path="add-role" element={<AddRole />} />
+        </Route>
+
+        <Route path="/carts" element={<Carts />} />
 
         <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Navigate to="/404" replace />} />

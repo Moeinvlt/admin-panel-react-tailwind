@@ -1,13 +1,22 @@
+import { FastField } from "formik";
+
 const SubmitBtn = () => {
   return (
-    <div className="py-2.5 text-center">
-      <button
-        type="submit"
-        className="bg-sky-400 text-white py-2 px-4 rounded-md cursor-pointer"
-      >
-        ذخیره
-      </button>
-    </div>
+    <FastField>
+      {({ form }) => {
+        return (
+          <div className="text-center py-4">
+            <button
+              type="submit"
+              className="py-1.5 px-3 rounded-md bg-sky-400 text-white cursor-pointer"
+              disabled={form.isSubmitting}
+            >
+              {form.isSubmitting ? "در حال ارسال..." : "ذخیره"}
+            </button>
+          </div>
+        );
+      }}
+    </FastField>
   );
 };
 

@@ -73,12 +73,6 @@ const DiscountsTable = () => {
     navigate(-1);
   };
 
-    // useEffect(() => {
-    //   if (!modalOpen) {
-    //     discountToEdit === null;
-    //   }
-    // }, [modalOpen]);
-
   return (
     <>
       <DataTable
