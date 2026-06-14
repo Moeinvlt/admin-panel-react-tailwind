@@ -27,3 +27,23 @@ export const editRolePermissionsApi = (roleId, data)=>{
 export const getSinglrRoleApi = (roleId)=>{
   return httpService(`/admin/roles/${roleId}`, "get")
 }
+
+export const getPaginatedUserseApi = (page, countOnPage, searchChar) => {
+  return httpService(`/admin/users?page=${page}&count=${countOnPage}&searchChar=${searchChar}`, "get");
+};
+
+export const addNewUserApi = (data) => {
+  return httpService("/admin/users", "post", data);
+};
+
+export const getSinglrUserApi = (userId)=>{
+  return httpService(`/admin/users/${userId}`, "get")
+}
+
+export const editUserApi = (userId, data) => {
+  return httpService(`/admin/users/${userId}`, "put", data);
+};
+
+export const deleteUserApi = (userId) => {
+  return httpService(`/admin/users/${userId}`, "delete");
+};

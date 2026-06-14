@@ -80,7 +80,7 @@ const Sidebar = () => {
           <SidebarGroupTitle title="کاربران و همکاران" />
           {/* tlte */}
 
-          <SidebarItem title="مشاهده کاربران" path="/" icon={<FaUsers />} />
+          <SidebarItem title="مشاهده کاربران" path="/users" icon={<FaUsers />} />
 
           <SidebarItem title="نقش ها" path="/roles" icon={<FaUserTag />} />
 
