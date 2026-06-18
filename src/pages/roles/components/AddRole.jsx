@@ -21,7 +21,7 @@ const AddRole = ({ setRolesData }) => {
   const { permissionsData, setPermissionsData } = useGetPermissions();
   const [roleToEdit, setRoleToEdit] = useState(null);
   const [reInitialValues, setReInitialValues] = useState(null);
-  const { modalOpen, setModalOpen } = useContext(AdminContext);
+  const { setModalOpen } = useContext(AdminContext);
 
   const handleGetRoleToEditData = async () => {
     const res = await getSinglrRoleApi(roleIdToEdit);

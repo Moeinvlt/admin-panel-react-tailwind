@@ -20,9 +20,9 @@ const SearchableSelect = ({
   const formik = useFormikContext();
 
   // فیلتر گزینه‌ها بر اساس جستجو
-  const filteredOptions = options.filter((opt) =>
-    opt.value.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+const filteredOptions = (options || []).filter((opt) =>
+  opt.value.toLowerCase().includes(searchTerm.toLowerCase())
+);
 
   // مقداردهی اولیه از فرمیک (برای ویرایش)
   useEffect(() => {
@@ -41,9 +41,11 @@ const SearchableSelect = ({
     setSelectedItems(initialSelected);
   }, [formik.values, name, options, resultType]);
 
-  useEffect(() => {
-    setSelectedItems(initialItems)
-  }, [initialItems])
+useEffect(() => {
+  if (initialItems && Array.isArray(initialItems)) {
+    setSelectedItems(initialItems);
+  }
+}, [initialItems]);
 
   // بستن لیست با کلیک بیرون
   useEffect(() => {

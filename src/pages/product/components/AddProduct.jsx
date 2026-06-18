@@ -127,11 +127,11 @@ const AddProduct = () => {
       }
 
       if (productToEdit) {
-        // ابتدا اگر parent_id دارد، mainCategories را بارگذاری کن
+        
         if (productToEdit.parent_id) {
           await handleSetMainCategories(productToEdit.parent_id);
         }
-        // سپس reInitialValues را تنظیم کن
+        
         setReInitialValues({
           ...productToEdit,
           parentCategories: productToEdit.parent_id || "",

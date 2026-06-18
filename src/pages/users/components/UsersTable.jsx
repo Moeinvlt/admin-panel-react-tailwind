@@ -9,6 +9,8 @@ import { Toasty } from "../../../utils/customToast";
 import { useGetUsers } from "../../../api/users/hooks/useGetUsers";
 import { deleteUserApi } from "../../../api/users/usersApi";
 import Roles from "./tableAdditions/Roles";
+import AddUser from "./AddUser";
+import ModalPageBtn from "../../../components/ModalPageBtn";
 
 const UsersTable = () => {
   const {
@@ -20,7 +22,9 @@ const UsersTable = () => {
     handleSearch,
     pageCount,
     setCurrentPage,
+    refetch,
   } = useGetUsers();
+
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -77,21 +81,23 @@ const UsersTable = () => {
   };
 
   return (
-    <PaginatedDataTable
-      title="مدیریت محصول"
-      tableData={usersData}
-      dataInfo={dataInfo}
-      isLoading={loading}
-      error={error}
-      searchParams={searchParams}
-      currentPage={currentPage}
-      setCurrentPage={setCurrentPage}
-      pageCount={pageCount}
-      handleSearch={handleSearch}
-      modalBtn={false}
-      //   addPageBtn={true}
-      //   addPagePath="/products/add-product"
-    />
+    <>
+      <PaginatedDataTable
+        title="مدیریت محصول"
+        tableData={usersData}
+        dataInfo={dataInfo}
+        isLoading={loading}
+        error={error}
+        searchParams={searchParams}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        pageCount={pageCount}
+        handleSearch={handleSearch}
+        modalBtn={false}
+        addPageBtn={<ModalPageBtn linkPath="/users/add-user" />}
+      />
+      <AddUser setUsersData={setUsersData} refetchUsers={refetch} />
+    </>
   );
 };
 

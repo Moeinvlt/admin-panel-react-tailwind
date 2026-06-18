@@ -21,6 +21,7 @@ import Permissions from "../../../pages/permissions/Permissions";
 import Roles from "../../../pages/roles/Roles";
 import AddRole from "../../../pages/roles/components/AddRole";
 import Users from "../../../pages/users/Users";
+import AddUser from "../../../pages/users/components/AddUser";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -57,7 +58,7 @@ const Content = () => {
         </Route>
 
         <Route path="/users" element={<Users />}>
-          {/* <Route path="add-role" element={<AddRole />} /> */}
+          <Route path="add-user" element={<AddUser />} />
         </Route>
 
         <Route path="/carts" element={<Carts />} />

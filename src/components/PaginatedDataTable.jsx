@@ -22,7 +22,6 @@ const PaginatedDataTable = ({
   searchParams = {}, // مقدار پیش‌فرض برای searchParams
   handleSearch = () => {}, // تابع پیش‌فرض خالی
   addPageBtn = false,
-  addPagePath,
 }) => {
   const pageRange = 3;
   const [pages, setPages] = useState([]);
@@ -72,7 +71,8 @@ const PaginatedDataTable = ({
           </div>
         )}
 
-        {addPageBtn && <AddPageBtn linkPath={addPagePath} />}
+        {addPageBtn && <div>{addPageBtn}</div>}
+        
 
         {prevPageBtn ? (
           <div>

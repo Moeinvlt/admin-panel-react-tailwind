@@ -6,18 +6,10 @@ import FormErrorMessage from "./FormErrorMessage";
 
 const days = Array.from({ length: 31 }, (_, i) => i + 1);
 const months = [
-  { id: 1, value: "فروردین" },
-  { id: 2, value: "اردیبهشت" },
-  { id: 3, value: "خرداد" },
-  { id: 4, value: "تیر" },
-  { id: 5, value: "مرداد" },
-  { id: 6, value: "شهریور" },
-  { id: 7, value: "مهر" },
-  { id: 8, value: "آبان" },
-  { id: 9, value: "آذر" },
-  { id: 10, value: "دی" },
-  { id: 11, value: "بهمن" },
-  { id: 12, value: "اسفند" },
+  { id: 1, value: "فروردین" }, { id: 2, value: "اردیبهشت" }, { id: 3, value: "خرداد" },
+  { id: 4, value: "تیر" }, { id: 5, value: "مرداد" }, { id: 6, value: "شهریور" },
+  { id: 7, value: "مهر" }, { id: 8, value: "آبان" }, { id: 9, value: "آذر" },
+  { id: 10, value: "دی" }, { id: 11, value: "بهمن" }, { id: 12, value: "اسفند" },
 ];
 
 const DatePicker = ({
@@ -36,41 +28,69 @@ const DatePicker = ({
   const [years, setYears] = useState([]);
   const wrapperRef = useRef(null);
 
-  // مقداردهی اولیه از initialDate یا مقدار موجود در فرمیک
-  useEffect(() => {
-    const currentValue = values[name];
-    let m;
-    if (currentValue) {
-      // فرمت ذخیره شده: "DD / MM / YYYY" (مثلاً "25 / 04 / 1403")
-      const parts = currentValue.split(" / ");
-      if (parts.length === 3) {
-        setDay(parseInt(parts[0]));
-        setMonth(parseInt(parts[1]));
-        setYear(parseInt(parts[2]));
-        return;
-      }
+  // تابع تولید لیست سال‌ها
+  const generateYears = (baseYear) => {
+    if (!baseYear) {
+      setYears([]);
+      return;
     }
-    if (initialDate) {
-      m = jMoment(initialDate);
-    } else {
-      m = jMoment();
-    }
-    setDay(m.jDate());
-    setMonth(m.jMonth() + 1);
-    setYear(m.jYear());
-  }, [initialDate, name, values]);
-
-  // تولید لیست سال‌ها بر اساس سال جاری و محدودیت‌ها
-  const generateYears = (currentYear) => {
-    const start = currentYear - (yearsLimit.from || 0);
-    const end = currentYear + (yearsLimit.to || 0);
+    const start = baseYear - (yearsLimit.from || 0);
+    const end = baseYear + (yearsLimit.to || 0);
     const yrs = [];
     for (let i = start; i <= end; i++) yrs.push(i);
     setYears(yrs);
   };
 
+  // مقداردهی اولیه از مقدار فرمیک یا initialDate
+  const fieldValue = values[name];
+  useEffect(() => {
+    // تلاش برای خواندن از مقدار فرمیک
+    if (fieldValue && typeof fieldValue === "string") {
+      const parts = fieldValue.split(" / ");
+      if (parts.length === 3) {
+        const d = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        const y = parseInt(parts[2], 10);
+        if (!isNaN(d) && !isNaN(m) && !isNaN(y) && d >= 1 && d <= 31 && m >= 1 && m <= 12) {
+          setDay(d);
+          setMonth(m);
+          setYear(y);
+          generateYears(y);
+          return;
+        }
+      }
+    }
+    // اگر فرمیک خالی بود، از initialDate استفاده کن (همان رشته شمسی)
+    if (initialDate && typeof initialDate === "string") {
+      const parts = initialDate.split(" / ");
+      if (parts.length === 3) {
+        const d = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        const y = parseInt(parts[2], 10);
+        if (!isNaN(d) && !isNaN(m) && !isNaN(y) && d >= 1 && d <= 31 && m >= 1 && m <= 12) {
+          setDay(d);
+          setMonth(m);
+          setYear(y);
+          generateYears(y);
+          return;
+        }
+      }
+    }
+    // در غیر این‌صورت همه چیز را null کن
+    setDay(null);
+    setMonth(null);
+    setYear(null);
+    setYears([]);
+  }, [initialDate, fieldValue]); // فقط به fieldValue وابسته است
+
   const handleOpen = () => {
-    if (year) generateYears(year);
+    if (year) {
+      generateYears(year);
+    } else {
+      // سال جاری شمسی را محاسبه کن (تنها استفاده از jMoment)
+      const currentJYear = jMoment().jYear();
+      generateYears(currentJYear);
+    }
     setIsOpen(true);
   };
 
@@ -98,7 +118,7 @@ const DatePicker = ({
       <div className="customBox flex w-full">
         <input
           type="text"
-          value={values[name] || ""}
+          value={fieldValue || ""}
           placeholder={placeholder}
           readOnly
           onClick={handleOpen}
@@ -125,9 +145,7 @@ const DatePicker = ({
                 >
                   <option value="">--</option>
                   {days.map((d) => (
-                    <option key={d} value={d}>
-                      {d}
-                    </option>
+                    <option key={d} value={d}>{d}</option>
                   ))}
                 </select>
               </div>
@@ -142,9 +160,7 @@ const DatePicker = ({
                 >
                   <option value="">--</option>
                   {months.map((m) => (
-                    <option key={m.id} value={m.id}>
-                      {m.value}
-                    </option>
+                    <option key={m.id} value={m.id}>{m.value}</option>
                   ))}
                 </select>
               </div>
@@ -159,9 +175,7 @@ const DatePicker = ({
                 >
                   <option value="">--</option>
                   {years.map((y) => (
-                    <option key={y} value={y}>
-                      {y}
-                    </option>
+                    <option key={y} value={y}>{y}</option>
                   ))}
                 </select>
               </div>

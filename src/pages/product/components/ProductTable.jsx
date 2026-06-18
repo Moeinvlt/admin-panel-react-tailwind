@@ -9,6 +9,9 @@ import { useGetProducts } from "../../../api/products/hooks/useGetProducts";
 import { Alert } from "../../../utils/alerts";
 import { deleteProductApi } from "../../../api/products/productsApi";
 import { Toasty } from "../../../utils/customToast";
+import ModalPageBtn from "../../../components/ModalPageBtn";
+import { useContext } from "react";
+import { AdminContext } from "../../../context/AdminContextContainer";
 
 const ProductTable = () => {
   const {
@@ -21,6 +24,13 @@ const ProductTable = () => {
     handleSearch,
     setData,
   } = useGetProducts();
+
+    const { modalOpen, setModalOpen } = useContext(AdminContext);
+
+    if (modalOpen) {
+      setModalOpen(false)
+    }
+  
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -81,8 +91,7 @@ const ProductTable = () => {
       pageCount={pageCount}
       handleSearch={handleSearch}
       modalBtn={false}
-      addPageBtn={true}
-      addPagePath="/products/add-product"
+      addPageBtn={<ModalPageBtn linkPath="/products/add-product" />}
     />
   );
 };
