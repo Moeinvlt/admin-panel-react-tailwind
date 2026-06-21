@@ -49,8 +49,7 @@ export const onSubmit = async (
       }
     } else {
       const res = await addNewUserApi(submitValues);
-      console.log("Response:", res);
-      if (res.status === 201 || res.status === 202) {
+      if (res.status === 201) {
         Toasty(res.data?.message || "کاربر با موفقیت اضافه شد", "success");
        
         setUsersData((prev) => {
@@ -65,8 +64,6 @@ export const onSubmit = async (
       }
     }
   } catch (error) {
-    console.error("Full error:", error);
-    console.error("Error response:", error.response?.data);
     Toasty(
       error.response?.data?.message || "مشکلی در انجام عملیات به وجود آمده است",
     );

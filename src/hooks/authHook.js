@@ -2,10 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Toasty } from "../utils/customToast";
 import { getUserApi } from "../api/auth/auth";
+import { useDispatch } from "react-redux";
+import { receiveUserResponse } from "../redux/users/userActions";
 
 export const useIsLogin = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const dispath = useDispatch()
 
   const handleCheckLogin = async () => {
     try {
@@ -13,6 +17,7 @@ export const useIsLogin = () => {
 
       setIsLogin(res.status === 200 ? true : false);
       setLoading(false);
+      dispath(receiveUserResponse(res.data))
     } catch (error) {
       localStorage.removeItem("loginToken");
       setIsLogin(false);

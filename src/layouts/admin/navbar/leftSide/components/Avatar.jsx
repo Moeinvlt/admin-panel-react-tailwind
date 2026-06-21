@@ -1,9 +1,11 @@
 import { useState } from "react";
 import profileImg from "../../../../../assets/images/profimage.jpg";
 import ProfileInfo from "./ProfileInfo";
+import { useSelector } from "react-redux";
 
 const Avatar = () => {
   const [open, setOpen] = useState(false);
+  const user = useSelector((state) => state.userReducer.data);
 
   return (
     <>
@@ -16,9 +18,9 @@ const Avatar = () => {
             setOpen(!open);
           }}
         >
-          <div className="w-8 h-8">
+          <div className="w-8 h-8 overflow-hidden">
             <img
-              src={profileImg}
+              src={user.image || profileImg}
               alt="profile-image"
               className="w-full rounded-full"
             />

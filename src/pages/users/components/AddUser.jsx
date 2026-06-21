@@ -145,7 +145,7 @@ const AddUser = ({ setUsersData, refetchUsers }) => {
                 name="password"
                 label="کلمه عبور"
                 placeholder={
-                  userId ? "در ویرایش خالی بگذارید" : "حداقل 6 کاراکتر"
+                  "حداقل 8 کاراکتر"
                 }
               />
               <FormikControl

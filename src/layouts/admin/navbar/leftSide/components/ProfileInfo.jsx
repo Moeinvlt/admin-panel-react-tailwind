@@ -4,10 +4,13 @@ import { FiUser } from "react-icons/fi";
 import { MdLogout } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { Alert } from "../../../../../utils/alerts";
+import { useSelector } from "react-redux";
 
 const ProfileInfo = ({ isOpen, onClose }) => {
   const menuRef = useRef(null);
   const navigate = useNavigate();
+
+  const user = useSelector(state => state.userReducer.data)
 
   useEffect(() => {
     if (!isOpen) return;
@@ -47,7 +50,9 @@ const ProfileInfo = ({ isOpen, onClose }) => {
     >
       <ul className="w-full flex flex-col gap-3 pb-4 px-4">
         <li className="w-full py-5 border-b border-border-light dark:border-border-dark">
-          <p className="text-center defaultText text-[17px]">نام کاربری</p>
+          <p className="text-center defaultText text-[17px]">
+            {user.user_name || "نام ندارد"}
+          </p>
         </li>
         <li className="w-full flex gap-2 items-center text-[14px] defaultText">
           <a href="#" className="flex gap-2 items-center w-full cursor-pointer hover:text-sky-500 hover:bg-sky-500/20 hover:dark:bg-gray-900/80 transition-colors duration-150 p-2 rounded-md">
