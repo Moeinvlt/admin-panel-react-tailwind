@@ -22,9 +22,16 @@ import Roles from "../../../pages/roles/Roles";
 import AddRole from "../../../pages/roles/components/AddRole";
 import Users from "../../../pages/users/Users";
 import AddUser from "../../../pages/users/components/AddUser";
+import { useHasPermission } from "../../../hooks/permissionsHook";
+import PermComponent from "../../../components/PermComponent";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
+
+  const hasCategoryPermission = useHasPermission("read_categories");
+  const hasDiscountsPermission = useHasPermission("read_discounts")
+  const hasUserPermission = useHasPermission("read_users")
+  const hasRolesPermission = useHasPermission("read_roles")
 
   return (
     <main
@@ -34,32 +41,42 @@ const Content = () => {
     >
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/categories" element={<Category />}>
-          <Route path=":categoryId" element={<CategoryChildren />} />
-        </Route>
+        {hasCategoryPermission && (
+          <Route path="/categories" element={<Category />}>
+            <Route path=":categoryId" element={<CategoryChildren />} />
+          </Route>
+        )}
         <Route
           path="/categories/:categoryId/attributes"
-          element={<AddAttributes />}
+          element={<PermComponent component={<AddAttributes/>} pTitle="read_category_attrs"/>}
         />
-        <Route path="/product" element={<Product />} />
-        <Route path="/products/add-product" element={<AddProduct />} />
-        <Route path="/products/set-attr" element={<SetProductAttr />} />
-        <Route path="/products/gallery" element={<ProductGallery />} />
-        <Route path="/brands" element={<Brands />} />
-        <Route path="/guarantees" element={<Guarantees />} />
-        <Route path="/colors" element={<Colors />} />
-        <Route path="/discounts" element={<Discounts />}>
-          <Route path="add-discount-code" element={<AddDiscount />} />
-        </Route>
-        <Route path="/permissions" element={<Permissions />} />
+        <Route path="/product" element={<PermComponent component={<Product/>} pTitle="read_products"/>}/>
+        <Route path="/products/add-product" element={<PermComponent component={<AddProduct/>} pTitle="create_product"/>}/>
+        <Route path="/products/set-attr" element={<PermComponent component={<SetProductAttr/>} pTitle="create_product_attr"/>}/>
+        <Route path="/products/gallery" element={<PermComponent component={<ProductGallery/>} pTitle="create_product_image"/>}/>
+        <Route path="/brands" element={<PermComponent component={<Brands/>} pTitle="read_brands"/>}/>
+        <Route path="/guarantees" element={<PermComponent component={<Guarantees/>} pTitle="read_guaranties"/>}/>
+        <Route path="/colors" element={<PermComponent component={<Colors/>} pTitle="read_colors"/>}/>
 
-        <Route path="/roles" element={<Roles />}>
-          <Route path="add-role" element={<AddRole />} />
-        </Route>
+        {hasDiscountsPermission && (
+          <Route path="/discounts" element={<Discounts />}>
+            <Route path="add-discount-code" element={<AddDiscount />} />
+          </Route>
+        )}
 
-        <Route path="/users" element={<Users />}>
-          <Route path="add-user" element={<AddUser />} />
-        </Route>
+        {hasUserPermission && (
+          <Route path="/users" element={<Users />}>
+            <Route path="add-user" element={<AddUser />} />
+          </Route>
+        )}
+
+        {hasRolesPermission && (
+          <Route path="/roles" element={<Roles />}>
+            <Route path="add-role" element={<AddRole />} />
+          </Route>
+        )}
+
+        <Route path="/permissions" element={<PermComponent component={<Permissions/>} pTitle="read_permissions" />} />
 
         <Route path="/carts" element={<Carts />} />
 
