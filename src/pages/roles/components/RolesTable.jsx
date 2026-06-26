@@ -7,9 +7,12 @@ import { Toasty } from "../../../utils/customToast";
 import Actions from "./Actions";
 import AddRole from "./AddRole";
 import ModalPageBtn from "../../../components/ModalPageBtn";
+import { useHasPermission } from "../../../hooks/permissionsHook";
 
 const RolesTable = () => {
   const { rolesData, setRolesData, loading, error } = useGetRoles();
+
+  const hasAddRolePerm = useHasPermission("create_role");
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -42,7 +45,9 @@ const RolesTable = () => {
   const additionalField = [
     {
       field: "عملیات",
-      elements: (rowData) => <Actions rowData={rowData} handleDelete={handleDeleteRole} />,
+      elements: (rowData) => (
+        <Actions rowData={rowData} handleDelete={handleDeleteRole} />
+      ),
     },
   ];
 
@@ -56,9 +61,11 @@ const RolesTable = () => {
         isLoading={loading}
         error={error}
         modalBtn={false}
-        addPageBtn={<ModalPageBtn linkPath="/roles/add-role" />}
+        addPageBtn={
+          hasAddRolePerm ? <ModalPageBtn linkPath="/roles/add-role" /> : false
+        }
       />
-      <AddRole setRolesData={setRolesData} />
+      {hasAddRolePerm && <AddRole setRolesData={setRolesData} />}
     </>
   );
 };

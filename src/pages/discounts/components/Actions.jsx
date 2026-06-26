@@ -20,6 +20,7 @@ const Actions = ({ rowData, handleDelete }) => {
   return (
     <>
       <ActionBtn
+        pTitle="update_discount"
         actionTitle="ویرایش تخفیف"
         color="purple"
         iconColor="text-purple-500"
@@ -27,6 +28,7 @@ const Actions = ({ rowData, handleDelete }) => {
         onClick={handleOnOpenModal}
       />
       <ActionBtn
+        pTitle="delete_discount"
         actionTitle="حذف تخفیف"
         color="red"
         bgColor="bg-red-500"

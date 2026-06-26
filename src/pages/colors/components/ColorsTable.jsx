@@ -8,11 +8,14 @@ import { AdminContext } from "../../../context/AdminContextContainer";
 import { Alert } from "../../../utils/alerts";
 import { Toasty } from "../../../utils/customToast";
 import { deleteColorApi } from "../../../api/colors/colorsApi";
+import { useHasPermission } from "../../../hooks/permissionsHook";
 
 const ColorsTable = () => {
   const { data, setData, loading, error } = useGetColors();
   const [colorToEdit, setColorToEdit] = useState(null);
   const { modalOpen, setModalOpen } = useContext(AdminContext);
+
+  const hasAddColorPerm = useHasPermission("create_color");
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -28,7 +31,11 @@ const ColorsTable = () => {
     {
       title: "عملیات",
       elements: (rowData) => (
-        <Actions rowData={rowData} setColorToEdit={setColorToEdit} handleDelete={handleDeleteColor} />
+        <Actions
+          rowData={rowData}
+          setColorToEdit={setColorToEdit}
+          handleDelete={handleDeleteColor}
+        />
       ),
     },
   ];
@@ -75,13 +82,17 @@ const ColorsTable = () => {
         error={error}
         limit={5}
         additionalField={additionalField}
+        addPageBtn={false}
+        modalBtn={hasAddColorPerm ? true : false}
       />
-      <AddColor
-        setData={setData}
-        setColorToEdit={setColorToEdit}
-        colorToEdit={colorToEdit}
-        onSuccess={handleOnSuccess}
-      />
+      {hasAddColorPerm && (
+        <AddColor
+          setData={setData}
+          setColorToEdit={setColorToEdit}
+          colorToEdit={colorToEdit}
+          onSuccess={handleOnSuccess}
+        />
+      )}
     </>
   );
 };

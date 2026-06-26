@@ -20,6 +20,7 @@ const Actions = ({ rowData, handleDelete  }) => {
   return (
     <>
       <ActionBtn
+        pTitle="update_user"
         actionTitle="ویرایش کاربر"
         color="purple"
         iconColor="text-purple-500"
@@ -28,6 +29,7 @@ const Actions = ({ rowData, handleDelete  }) => {
       />
 
       <ActionBtn
+        pTitle="delete_user"
         actionTitle="حذف کاربر"
         color="red"
         bgColor="bg-red-500"

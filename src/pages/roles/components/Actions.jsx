@@ -26,6 +26,7 @@ const Actions = ({ rowData, handleDelete }) => {
   return (
     <>
       <ActionBtn
+        pTitle="update_role"
         actionTitle="ویرایش نقش"
         color="purple"
         iconColor="text-purple-500"
@@ -33,6 +34,7 @@ const Actions = ({ rowData, handleDelete }) => {
         onClick={handleOnOpenEditMolad}
       />
       <ActionBtn
+        pTitle="update_role_permissions"
         actionTitle="ویرایش دسترسی ها"
         color="blue"
         iconColor="text-sky-500"
@@ -40,6 +42,7 @@ const Actions = ({ rowData, handleDelete }) => {
         onClick={handleOnOpenPermissionsMolad}
       />
       <ActionBtn
+        pTitle="update_role_permissions"
         actionTitle="حذف نقش"
         color="red"
         bgColor="bg-red-500"

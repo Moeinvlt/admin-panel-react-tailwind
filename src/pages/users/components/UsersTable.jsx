@@ -11,6 +11,8 @@ import { deleteUserApi } from "../../../api/users/usersApi";
 import Roles from "./tableAdditions/Roles";
 import AddUser from "./AddUser";
 import ModalPageBtn from "../../../components/ModalPageBtn";
+import { useHasPermission } from "../../../hooks/permissionsHook";
+import { useCallback, useMemo } from "react";
 
 const UsersTable = () => {
   const {
@@ -25,59 +27,76 @@ const UsersTable = () => {
     refetch,
   } = useGetUsers();
 
+  const hasAddUserPerm = useHasPermission("create_user");
+  const hasActionPerm = useHasPermission(["update_user", "delete_user"]);
 
-  const dataInfo = [
-    { field: "id", title: "#" },
-    { field: "user_name", title: "نام کاربری" },
-    { field: "first_name", title: "نام" },
-    { field: "last_name", title: "نام خانوادگی" },
-    { field: "phone", title: "شماره همراه" },
-    { field: "email", title: "ایمیل" },
-    {
-      field: null,
-      title: "نقش",
-      elements: (rowData) => <Roles rowData={rowData} />,
+  const handleDeleteUser = useCallback(
+    async (user) => {
+      const result = await Alert({
+        title: "حذف کاربر",
+        text: `آیا از حذف ${user.phone} اطمینان دارید؟`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "بله",
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const res = await deleteUserApi(user.id);
+          if (res.status === 200) {
+            setUsersData((prevData) =>
+              prevData.filter((item) => item.id !== user.id),
+            );
+            Toasty(res.data.message, "success");
+          }
+        } catch (err) {
+          Toasty("مشکلی در انجام عملیات رخ داده است", "error");
+        }
+      }
     },
-    {
-      field: null,
-      title: "جنسیت",
-      elements: (rowData) => (rowData.gender == 1 ? "آقا" : "خانم"),
-    },
-    {
-      field: null,
-      title: "عملیات",
-      elements: (rowData) => (
-        <Actions rowData={rowData} handleDelete={handleDeleteProduct} />
-      ),
-    },
-  ];
+    [setUsersData],
+  );
+
+  const dataInfo = useMemo(() => {
+    const baseColumns = [
+      { field: "id", title: "#" },
+      { field: "user_name", title: "نام کاربری" },
+      { field: "first_name", title: "نام" },
+      { field: "last_name", title: "نام خانوادگی" },
+      { field: "phone", title: "شماره همراه" },
+      { field: "email", title: "ایمیل" },
+      {
+        field: null,
+        title: "نقش",
+        elements: (rowData) => <Roles rowData={rowData} />,
+      },
+      {
+        field: null,
+        title: "جنسیت",
+        elements: (rowData) => (rowData.gender == 1 ? "آقا" : "خانم"),
+      },
+    ];
+
+    if (hasActionPerm) {
+      baseColumns.push({
+        field: null,
+        title: "عملیات",
+        elements: (rowData) => (
+          <Actions
+            rowData={rowData}
+            handleDelete={handleDeleteUser}
+            hasPermission={hasActionPerm}
+          />
+        ),
+      });
+    }
+
+    return baseColumns;
+  }, [hasActionPerm, handleDeleteUser]);
+  
   const searchParams = {
     title: "جستجو",
     placeholder: "قسمتی از عنوان را وارد کنید",
-  };
-
-  const handleDeleteProduct = async (user) => {
-    const result = await Alert({
-      title: "حذف دسته کاربر",
-      text: `آیا از حذف ${user.phone} اطمینان دارید؟`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "بله",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const res = await deleteUserApi(user.id);
-        if (res.status === 200) {
-          setUsersData((prevData) =>
-            prevData.filter((item) => item.id !== user.id),
-          );
-          Toasty(res.data.message, "success");
-        }
-      } catch (err) {
-        Toasty("مشکلی در انجام عملیات رخ داده است", "error");
-      }
-    }
   };
 
   return (
@@ -94,9 +113,13 @@ const UsersTable = () => {
         pageCount={pageCount}
         handleSearch={handleSearch}
         modalBtn={false}
-        addPageBtn={<ModalPageBtn linkPath="/users/add-user" />}
+        addPageBtn={
+          hasAddUserPerm ? <ModalPageBtn linkPath="/users/add-user" /> : false
+        }
       />
-      <AddUser setUsersData={setUsersData} refetchUsers={refetch} />
+      {hasAddUserPerm && (
+        <AddUser setUsersData={setUsersData} refetchUsers={refetch} />
+      )}
     </>
   );
 };

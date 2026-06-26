@@ -12,6 +12,7 @@ import { Toasty } from "../../../utils/customToast";
 import ModalPageBtn from "../../../components/ModalPageBtn";
 import { useContext } from "react";
 import { AdminContext } from "../../../context/AdminContextContainer";
+import { useHasPermission } from "../../../hooks/permissionsHook";
 
 const ProductTable = () => {
   const {
@@ -26,6 +27,7 @@ const ProductTable = () => {
   } = useGetProducts();
 
     const { modalOpen, setModalOpen } = useContext(AdminContext);
+    const hasAddProductPerm = useHasPermission("create_product")
 
     if (modalOpen) {
       setModalOpen(false)
@@ -91,7 +93,7 @@ const ProductTable = () => {
       pageCount={pageCount}
       handleSearch={handleSearch}
       modalBtn={false}
-      addPageBtn={<ModalPageBtn linkPath="/products/add-product" />}
+      addPageBtn={hasAddProductPerm ? <ModalPageBtn linkPath="/products/add-product" /> : false}
     />
   );
 };

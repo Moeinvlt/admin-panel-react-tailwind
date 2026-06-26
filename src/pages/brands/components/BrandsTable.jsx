@@ -14,11 +14,14 @@ import { AdminContext } from "../../../context/AdminContextContainer";
 import { Alert } from "../../../utils/alerts";
 import { deleteBrandApi } from "../../../api/brands/brandsApi";
 import { Toasty } from "../../../utils/customToast";
+import { useHasPermission } from "../../../hooks/permissionsHook";
 
 const BrandsTable = () => {
   const { data, setData, loading, error } = useGetBrands();
-  const {setModalOpen} = useContext(AdminContext);
+  const { setModalOpen } = useContext(AdminContext);
   const [brandToEdit, setBrandToEdit] = useState(null);
+
+  const hasAddBrandPerm = useHasPermission("create_brand");
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -96,13 +99,17 @@ const BrandsTable = () => {
         additionalField={additionalField}
         isLoading={loading}
         error={error}
+        addPageBtn={false}
+        modalBtn={hasAddBrandPerm ? true : false}
       />
-      <AddBrand
-        onSuccess={handleOnSuccess}
-        setData={setData}
-        brandToEdit={brandToEdit}
-        setBrandToEdit={setBrandToEdit}
-      />
+      {hasAddBrandPerm && (
+        <AddBrand
+          onSuccess={handleOnSuccess}
+          setData={setData}
+          brandToEdit={brandToEdit}
+          setBrandToEdit={setBrandToEdit}
+        />
+      )}
     </>
   );
 };

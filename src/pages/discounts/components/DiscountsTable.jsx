@@ -11,18 +11,20 @@ import ModalPageBtn from "../../../components/ModalPageBtn";
 import { deleteDiscountApi } from "../../../api/discounts/discountsApi";
 import { Toasty } from "../../../utils/customToast";
 import { Alert } from "../../../utils/alerts";
+import { useHasPermission } from "../../../hooks/permissionsHook";
 
 const DiscountsTable = () => {
   const { discountsData, setDiscountsData, loading, error } = useGetDiscounts();
   const navigate = useNavigate();
-  const {  modalOpen, setModalOpen } = useContext(AdminContext);
-  const location = useLocation();
-  const discountToEdit = location.state?.discountToEdit;
+  const { setModalOpen } = useContext(AdminContext);
+  // const location = useLocation();
+  // const discountToEdit = location.state?.discountToEdit;
+  const hasAddDiscountPerm = useHasPermission("create_discount");
 
   const handleDeleteDiscount = async (discount) => {
     const result = await Alert({
       title: `حذف ${discount.title}`,
-      text: 'آیا از حذف این کد تخفیف اطمینان دارید؟',
+      text: "آیا از حذف این کد تخفیف اطمینان دارید؟",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "بله",
@@ -32,7 +34,9 @@ const DiscountsTable = () => {
       try {
         const res = await deleteDiscountApi(discount.id);
         if (res.status === 200) {
-          setDiscountsData((lastData) => lastData.filter((d) => d.id != discount.id));
+          setDiscountsData((lastData) =>
+            lastData.filter((d) => d.id != discount.id),
+          );
           Toasty(res.data.message, "success");
         }
       } catch (err) {
@@ -64,7 +68,9 @@ const DiscountsTable = () => {
     },
     {
       title: "عملیات",
-      elements: (rowData) => <Actions rowData={rowData} handleDelete={handleDeleteDiscount} />,
+      elements: (rowData) => (
+        <Actions rowData={rowData} handleDelete={handleDeleteDiscount} />
+      ),
     },
   ];
 
@@ -84,9 +90,20 @@ const DiscountsTable = () => {
         limit={5}
         additionalField={additionalField}
         modalBtn={false}
-        addPageBtn={<ModalPageBtn linkPath="/discounts/add-discount-code" />}
+        addPageBtn={
+          hasAddDiscountPerm ? (
+            <ModalPageBtn linkPath="/discounts/add-discount-code" />
+          ) : (
+            false
+          )
+        }
       />
-      <AddDiscount onClose={onModalClose} setDiscountsData={setDiscountsData} />
+      {hasAddDiscountPerm && (
+        <AddDiscount
+          onClose={onModalClose}
+          setDiscountsData={setDiscountsData}
+        />
+      )}
     </>
   );
 };

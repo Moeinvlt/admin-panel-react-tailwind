@@ -7,11 +7,14 @@ import { AdminContext } from "../../../context/AdminContextContainer";
 import { Alert } from "../../../utils/alerts";
 import { Toasty } from "../../../utils/customToast";
 import { deleteGuaranteesApi } from "../../../api/guarantees/GuaranteesApi";
+import { useHasPermission } from "../../../hooks/permissionsHook";
 
 const GuaranteesTable = () => {
   const { data, loading, error, setData } = useGetGuarantees();
   const { modalOpen, setModalOpen } = useContext(AdminContext);
   const [guaranteeToEdit, setGuaranteeToEdit] = useState(null);
+
+  const hasAddGuaranteePerm = useHasPermission("create_guarantee");
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -76,13 +79,17 @@ const GuaranteesTable = () => {
         dataInfo={dataInfo}
         limit={5}
         additionalField={additionalField}
+        addPageBtn={false}
+        modalBtn={hasAddGuaranteePerm ? true : false}
       />
-      <AddGuarantee
-        setData={setData}
-        onSuccess={handleOnSuccess}
-        guaranteeToEdit={guaranteeToEdit}
-        setGuaranteeToEdit={setGuaranteeToEdit}
-      />
+      {hasAddGuaranteePerm && (
+        <AddGuarantee
+          setData={setData}
+          onSuccess={handleOnSuccess}
+          guaranteeToEdit={guaranteeToEdit}
+          setGuaranteeToEdit={setGuaranteeToEdit}
+        />
+      )}
     </>
   );
 };

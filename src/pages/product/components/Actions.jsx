@@ -9,6 +9,7 @@ const Actions = ({ rowData, handleDelete }) => {
   return (
     <>
       <ActionBtn
+        pTitle="update_product"
         actionTitle="ویرایش محصول"
         color="purple"
         icon={<FiEdit2 />}
@@ -16,6 +17,7 @@ const Actions = ({ rowData, handleDelete }) => {
         onClick={() => navigate('/products/add-product', {state: {productToEdit:rowData}})}
       />
       <ActionBtn
+        pTitle="create_product_attr"
         actionTitle="ویژگی ها"
         color="green"
         icon={<FaList />}
@@ -23,6 +25,7 @@ const Actions = ({ rowData, handleDelete }) => {
         onClick={() => navigate('/products/set-attr', {state: {selectedProduct: rowData}})}
       />
       <ActionBtn
+        pTitle="create_product_image"
         actionTitle="گالری تصاویر"
         color="blue"
         icon={<FaImages />}
@@ -30,6 +33,7 @@ const Actions = ({ rowData, handleDelete }) => {
         onClick={() => navigate('/products/gallery', {state: {selectedProduct: rowData}})}
       />
       <ActionBtn
+        pTitle="delete_product"
         actionTitle="حذف محصول"
         color="red"
         icon={<FaTrash />}

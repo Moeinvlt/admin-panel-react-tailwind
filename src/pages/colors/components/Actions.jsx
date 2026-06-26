@@ -15,6 +15,7 @@ const Actions = ({ rowData, setColorToEdit, handleDelete }) => {
   return (
     <>
       <ActionBtn
+        pTitle="update_color"
         actionTitle="ویرایش رنگ"
         color="purple"
         iconColor="text-purple-500"
@@ -23,6 +24,7 @@ const Actions = ({ rowData, setColorToEdit, handleDelete }) => {
       />
 
       <ActionBtn
+        pTitle="delete_color"
         actionTitle="حذف رنگ"
         color="red"
         iconColor="text-red-400"

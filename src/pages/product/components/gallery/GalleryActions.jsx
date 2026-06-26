@@ -7,13 +7,16 @@ const GalleryActions = ({ gallery, handleSetMainImage, handleDeleteImage }) => {
     <>
       {!gallery.is_main ? (
         <ActionBtn
+          pTitle="default_product_image"
           icon={<RiImageCircleAiFill />}
           color="green"
-          iconColor="text-green-500"          bgColor="bg-green-500"
+          iconColor="text-green-500"
+          bgColor="bg-green-500"
           onClick={() => handleSetMainImage(gallery.id)}
         />
       ) : null}
       <ActionBtn
+        pTitle="delete_product_image"
         icon={<FaTrash />}
         iconColor="text-red-400"
         color="red"

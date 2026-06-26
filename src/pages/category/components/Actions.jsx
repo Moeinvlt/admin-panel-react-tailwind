@@ -24,6 +24,7 @@ const Actions = ({ rowData, handleDelete }) => {
     <>
       {!params.categoryId ? (
         <ActionBtn
+          pTitle="read_categor"
           actionTitle="زیر مجموعه ها"
           color="blue"
           iconColor="text-sky-500"
@@ -36,6 +37,7 @@ const Actions = ({ rowData, handleDelete }) => {
         />
       ) : null}
       <ActionBtn
+        pTitle="update_category"
         actionTitle="ویرایش گروه محصول"
         color="purple"
         iconColor="text-purple-500"
@@ -44,6 +46,7 @@ const Actions = ({ rowData, handleDelete }) => {
       />
       {params.categoryId ? (
         <ActionBtn
+          pTitle="create_category_attr"
           actionTitle="ویژگی های دسته بندی"
           color="green"
           iconColor="text-green-500"
@@ -58,6 +61,7 @@ const Actions = ({ rowData, handleDelete }) => {
         />
       ) : null}
       <ActionBtn
+        pTitle="delete_category"
         actionTitle="حذف گروه محصول"
         color="red"
         iconColor="text-red-400"

@@ -19,7 +19,6 @@ const fetchUsers = async (page, count, char) => {
     if (res.status === 200) {
 
       const usersArray = res.data.data.data || [];
-      console.log("📦 Users array after refetch:", usersArray);
       setUsersData(usersArray);
       setPageCount(res.data.data.last_page || 1);
       setError(null);

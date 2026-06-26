@@ -1,4 +1,8 @@
-const ActionBtn = ({ icon, onClick, color, iconColor, actionTitle }) => {
+import { useHasPermission } from "../hooks/permissionsHook";
+
+const ActionBtn = ({ icon, onClick, color, iconColor, actionTitle, pTitle }) => {
+  const hasPerm = useHasPermission(pTitle)
+
   const bgColor = {
     purple: "bg-purple-500/30 hover:bg-purple-500",
     red: "bg-red-500/30 hover:bg-red-500",
@@ -8,7 +12,7 @@ const ActionBtn = ({ icon, onClick, color, iconColor, actionTitle }) => {
     sky: "bg-sky-500/30 hover:bg-sky-500",
   }[color];
 
-  return (
+  return hasPerm && (
     <button
       type="button"
       className={`relative ${iconColor} cursor-pointer text-[16px] mr-2 ${bgColor} hover:text-white transition-all duration-150 p-2 rounded-md group`}

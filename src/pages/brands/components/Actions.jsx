@@ -14,6 +14,7 @@ const Actions = ({ rowData, setBrandToEdit, handleDeleteBrand }) => {
   return (
     <>
       <ActionBtn
+        pTitle="update_brand"
         actionTitle="ویرایش برند"
         color="purple"
         iconColor="text-purple-500"
@@ -22,6 +23,7 @@ const Actions = ({ rowData, setBrandToEdit, handleDeleteBrand }) => {
       />
 
       <ActionBtn
+        pTitle="delete_brand"
         actionTitle="حذف برند"
         color="red"
         iconColor="text-red-400"

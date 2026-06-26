@@ -12,6 +12,7 @@ import { CategoryContext } from "../../../context/CategoryContext";
 import { Alert } from "../../../utils/alerts";
 import { useDeleteCategory } from "../../../api/category/hooks/useDeleteCategory";
 import IsActive from "./tableAdditions/IsActive";
+import { useHasPermission } from "../../../hooks/permissionsHook";
 
 const CategoryTable = () => {
   const { categoryId } = useParams();
@@ -21,6 +22,8 @@ const CategoryTable = () => {
   const { deleteCategory } = useDeleteCategory(setData);
 
   const { setModalOpen } = useContext(AdminContext);
+
+  const hasAddCategoryPerm = useHasPermission("create_category")
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -66,8 +69,10 @@ const CategoryTable = () => {
         limit={5}
         isLoading={loading}
         error={error}
+        addPageBtn={false}
+        modalBtn={hasAddCategoryPerm ? true : false}
       />
-      <AddCategory onSuccess={handleOnSuccess} />
+      {hasAddCategoryPerm && <AddCategory onSuccess={handleOnSuccess} />}
     </>
   );
 };

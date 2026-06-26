@@ -15,6 +15,7 @@ const Actions = ({ rowData, setGuaranteeToEdit, handleDelete }) => {
   return (
     <>
       <ActionBtn
+        pTitle="update_guarantee"
         actionTitle="ویرایش گارانتی"
         color="purple"
         iconColor="text-purple-500"
@@ -23,6 +24,7 @@ const Actions = ({ rowData, setGuaranteeToEdit, handleDelete }) => {
       />
 
       <ActionBtn
+        pTitle="delete_guarantee"
         actionTitle="حذف گارانتی"
         color="red"
         iconColor="text-red-400"
