@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useGetGuarantees } from "../../../api/guarantees/hooks/useGetGuarantees";
 import DataTable from "../../../components/DataTable";
 import Actions from "./Actions";
@@ -15,49 +15,61 @@ const GuaranteesTable = () => {
   const [guaranteeToEdit, setGuaranteeToEdit] = useState(null);
 
   const hasAddGuaranteePerm = useHasPermission("create_guarantee");
+  const hasActionPerm = useHasPermission([
+    "update_guarantee",
+    "delete_guarantee",
+  ]);
 
-  const dataInfo = [
-    { field: "id", title: "#" },
-    { field: "title", title: "عنوان" },
-    { field: "descriptions", title: "توضیحات" },
-    { field: "length", title: "مدت گارانتی" },
-    { field: "length_unit", title: "واحد" },
-  ];
+  const handleDeleteGuarantee = useCallback(
+    async (guarantee) => {
+      const result = await Alert({
+        title: "حذف دسته گارانتی",
+        text: `آیا از حذف ${guarantee.title} اطمینان دارید؟`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "بله",
+      });
 
-  const additionalField = [
-    {
-      title: "عملیات",
-      elements: (rowData) => (
-        <Actions
-          rowData={rowData}
-          setGuaranteeToEdit={setGuaranteeToEdit}
-          handleDelete={handleDeleteGuarantee}
-        />
-      ),
-    },
-  ];
-
-  const handleDeleteGuarantee = async (guarantee) => {
-    const result = await Alert({
-      title: "حذف دسته بندی",
-      text: `آیا از حذف ${guarantee.title} اطمینان دارید؟`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "بله",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const res = await deleteGuaranteesApi(guarantee.id);
-        if (res.status === 200) {
-          setData((lastData) => lastData.filter((d) => d.id != guarantee.id));
-          Toasty(res.data.message, "success");
+      if (result.isConfirmed) {
+        try {
+          const res = await deleteGuaranteesApi(guarantee.id);
+          if (res.status === 200) {
+            setData((lastData) => lastData.filter((d) => d.id != guarantee.id));
+            Toasty(res.data.message, "success");
+          }
+        } catch (err) {
+          Toasty("مشکلی در انجام عملیات رخ داده است", "error");
         }
-      } catch (err) {
-        Toasty("مشکلی در انجام عملیات رخ داده است", "error");
       }
+    },
+    [setData],
+  );
+
+  const dataInfo = useMemo(() => {
+    const basicColumns = [
+      { field: "id", title: "#" },
+      { field: "title", title: "عنوان" },
+      { field: "descriptions", title: "توضیحات" },
+      { field: "length", title: "مدت گارانتی" },
+      { field: "length_unit", title: "واحد" },
+    ];
+
+    if (hasActionPerm) {
+      basicColumns.push({
+        field: null,
+        title: "عملیات",
+        elements: (rowData) => (
+          <Actions
+            rowData={rowData}
+            setGuaranteeToEdit={setGuaranteeToEdit}
+            handleDelete={handleDeleteGuarantee}
+          />
+        ),
+      });
     }
-  };
+
+    return basicColumns;
+  }, [hasActionPerm, handleDeleteGuarantee]);
 
   const handleOnSuccess = () => {
     setModalOpen(false);
@@ -78,7 +90,6 @@ const GuaranteesTable = () => {
         error={error}
         dataInfo={dataInfo}
         limit={5}
-        additionalField={additionalField}
         addPageBtn={false}
         modalBtn={hasAddGuaranteePerm ? true : false}
       />

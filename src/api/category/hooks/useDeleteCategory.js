@@ -1,10 +1,10 @@
-import { useParams } from "react-router";
+import { useCallback } from "react"; // ← اضافه کنید
 import { Alert } from "../../../utils/alerts";
 import { Toasty } from "../../../utils/customToast";
 import { deleteCategoryApi } from "../categoryApi";
 
 export const useDeleteCategory = (setData) => {
-  const deleteCategory = async (rowData) => {
+  const deleteCategory = useCallback(async (rowData) => {
     const result = await Alert({
       title: "حذف دسته بندی",
       text: `آیا از حذف ${rowData.title} اطمینان دارید؟`,
@@ -26,7 +26,7 @@ export const useDeleteCategory = (setData) => {
         Toasty("مشکلی در انجام عملیات رخ داده است", "error");
       }
     }
-  };
+  }, [setData]);
 
   return { deleteCategory };
 };

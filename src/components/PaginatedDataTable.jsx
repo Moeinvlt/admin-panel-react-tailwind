@@ -107,7 +107,7 @@ const PaginatedDataTable = ({
                 <tr>
                   {dataInfo.map((i, index) => (
                     <th
-                      key={i.field || `notField__${index}`}
+                      key={`header-${index}`}
                       className="py-3 px-2 defaultText"
                     >
                       {i.title}
@@ -121,18 +121,18 @@ const PaginatedDataTable = ({
                     className="border-t border-border-light dark:border-border-dark hover:bg-gray-300/60 hover:dark:bg-gray-900/80"
                     key={d.id}
                   >
-                    {dataInfo.map((i, index) =>
+                    {dataInfo.map((i, colIndex) =>
                       i.field ? (
                         <td
                           className="py-3 px-2 defaultText text-center"
-                          key={i.field + "_" + d.id}
+                          key={`${i.field}-${d.id}`}
                         >
                           {d[i.field]}
                         </td>
                       ) : (
                         <td
                           className="py-3 px-2 defaultText text-center"
-                          key={d.id + "__" + i.id + "__" + index}
+                          key={`custom-${d.id}-${colIndex}`}
                         >
                           {i.elements(d)}
                         </td>

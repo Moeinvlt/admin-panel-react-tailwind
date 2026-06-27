@@ -55,7 +55,7 @@ const Content = () => {
         <Route path="/products/set-attr" element={<PermComponent component={<SetProductAttr/>} pTitle="create_product_attr"/>}/>
         <Route path="/products/gallery" element={<PermComponent component={<ProductGallery/>} pTitle="create_product_image"/>}/>
         <Route path="/brands" element={<PermComponent component={<Brands/>} pTitle="read_brands"/>}/>
-        <Route path="/guarantees" element={<PermComponent component={<Guarantees/>} pTitle="read_guaranties"/>}/>
+        <Route path="/guarantees" element={<PermComponent component={<Guarantees/>} pTitle="read_guarantees"/>}/>
         <Route path="/colors" element={<PermComponent component={<Colors/>} pTitle="read_colors"/>}/>
 
         {hasDiscountsPermission && (

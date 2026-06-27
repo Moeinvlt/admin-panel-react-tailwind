@@ -9,7 +9,7 @@ import { useGetBrands } from "../../../api/brands/hooks/useGetBrands";
 import { convertToDateToJalali } from "../../../utils/convertDate";
 import { apiPath } from "../../../api/httpService";
 import { HiX } from "react-icons/hi";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { AdminContext } from "../../../context/AdminContextContainer";
 import { Alert } from "../../../utils/alerts";
 import { deleteBrandApi } from "../../../api/brands/brandsApi";
@@ -22,50 +22,11 @@ const BrandsTable = () => {
   const [brandToEdit, setBrandToEdit] = useState(null);
 
   const hasAddBrandPerm = useHasPermission("create_brand");
+  const hasActionPerm = useHasPermission(["update_brand", "delete_brand"]);
 
-  const dataInfo = [
-    { field: "id", title: "#" },
-    { field: "original_name", title: "عنوان برند (اینگیلیسی)" },
-    { field: "persian_name", title: "عنوان برند (فارسی)" },
-  ];
-
-  const additionalField = [
-    {
-      title: "لوگو",
-      elements: (rowData) =>
-        rowData.logo ? (
-          <img
-            src={apiPath + "/" + rowData.logo}
-            alt="logo"
-            className="max-w-10 mx-auto"
-          />
-        ) : (
-          <HiX className="text-red-500 text-2xl mx-auto" />
-        ),
-    },
-    {
-      title: "تاریخ ساخت",
-      elements: (rowData) => convertToDateToJalali(rowData.created_at),
-    },
-    {
-      title: "تاریخ آخرین آپدیت",
-      elements: (rowData) => convertToDateToJalali(rowData.updated_at),
-    },
-    {
-      title: "عملیات",
-      elements: (rowData) => (
-        <Actions
-          rowData={rowData}
-          setBrandToEdit={setBrandToEdit}
-          handleDeleteBrand={handleDeleteBrand}
-        />
-      ),
-    },
-  ];
-
-  const handleDeleteBrand = async (brand) => {
+  const handleDeleteBrand = useCallback(async (brand) => {
     const result = await Alert({
-      title: "حذف دسته بندی",
+      title: "حذف دسته برند",
       text: `آیا از حذف ${brand.original_name} اطمینان دارید؟`,
       icon: "warning",
       showCancelButton: true,
@@ -83,7 +44,55 @@ const BrandsTable = () => {
         Toasty("مشکلی در انجام عملیات رخ داده است", "error");
       }
     }
-  };
+  }, [setData]);
+
+  const dataInfo = useMemo(() => {
+    const basicColumns = [
+      { field: "id", title: "#" },
+      { field: "original_name", title: "عنوان برند (اینگیلیسی)" },
+      { field: "persian_name", title: "عنوان برند (فارسی)" },
+      {
+        field: null,
+        title: "لوگو",
+        elements: (rowData) =>
+          rowData.logo ? (
+            <img
+              src={apiPath + "/" + rowData.logo}
+              alt="logo"
+              className="max-w-10 mx-auto"
+            />
+          ) : (
+            <HiX className="text-red-500 text-2xl mx-auto" />
+          ),
+      },
+      {
+        field: null,
+        title: "تاریخ ساخت",
+        elements: (rowData) => convertToDateToJalali(rowData.created_at),
+      },
+      {
+        field: null,
+        title: "تاریخ آخرین آپدیت",
+        elements: (rowData) => convertToDateToJalali(rowData.updated_at),
+      },
+    ];
+
+    if (hasActionPerm) {
+      basicColumns.push({
+        field: null,
+        title: "عملیات",
+        elements: (rowData) => (
+          <Actions
+            rowData={rowData}
+            setBrandToEdit={setBrandToEdit}
+            handleDeleteBrand={handleDeleteBrand}
+          />
+        ),
+      });
+    }
+
+    return basicColumns;
+  }, [hasActionPerm, handleDeleteBrand]);
 
   const handleOnSuccess = () => {
     setModalOpen(false);
@@ -96,7 +105,6 @@ const BrandsTable = () => {
         data={data}
         dataInfo={dataInfo}
         limit={5}
-        additionalField={additionalField}
         isLoading={loading}
         error={error}
         addPageBtn={false}

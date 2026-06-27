@@ -24,7 +24,7 @@ const Actions = ({ rowData, handleDelete }) => {
     <>
       {!params.categoryId ? (
         <ActionBtn
-          pTitle="read_categor"
+          pTitle="read_category"
           actionTitle="زیر مجموعه ها"
           color="blue"
           iconColor="text-sky-500"
@@ -46,7 +46,7 @@ const Actions = ({ rowData, handleDelete }) => {
       />
       {params.categoryId ? (
         <ActionBtn
-          pTitle="create_category_attr"
+          pTitle="read_category_attrs"
           actionTitle="ویژگی های دسته بندی"
           color="green"
           iconColor="text-green-500"

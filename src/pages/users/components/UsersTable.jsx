@@ -85,7 +85,6 @@ const UsersTable = () => {
           <Actions
             rowData={rowData}
             handleDelete={handleDeleteUser}
-            hasPermission={hasActionPerm}
           />
         ),
       });
@@ -93,7 +92,7 @@ const UsersTable = () => {
 
     return baseColumns;
   }, [hasActionPerm, handleDeleteUser]);
-  
+
   const searchParams = {
     title: "جستجو",
     placeholder: "قسمتی از عنوان را وارد کنید",

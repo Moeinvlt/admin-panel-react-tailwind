@@ -6,7 +6,7 @@ import ShowInMenue from "./tableAdditions/ShowInMenu";
 import { convertToDateToJalali } from "../../../utils/convertDate";
 import { useGetCategories } from "../../../api/category/hooks/useCategories";
 import AddCategory from "./AddCategory";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { AdminContext } from "../../../context/AdminContextContainer";
 import { CategoryContext } from "../../../context/CategoryContext";
 import { Alert } from "../../../utils/alerts";
@@ -23,34 +23,48 @@ const CategoryTable = () => {
 
   const { setModalOpen } = useContext(AdminContext);
 
-  const hasAddCategoryPerm = useHasPermission("create_category")
+  const hasAddCategoryPerm = useHasPermission("create_category");
+  const hasActionPerm = useHasPermission([
+    "read_category",
+    "update_category",
+    "create_category_attr",
+    "delete_category",
+  ]);
 
-  const dataInfo = [
-    { field: "id", title: "#" },
-    { field: "title", title: "عنوان دسته" },
-    { field: "parent_id", title: "والد" },
-  ];
+  const dataInfo = useMemo(() => {
+    const basicColumns = [
+      { field: "id", title: "#" },
+      { field: "title", title: "عنوان دسته" },
+      { field: "parent_id", title: "والد" },
+      {
+        field: null,
+        title: "نمایش در منو",
+        elements: (rowData) => <ShowInMenue rowData={rowData} />,
+      },
+      {
+        field: null,
+        title: "وضعیت",
+        elements: (rowData) => <IsActive rowData={rowData} />,
+      },
+      {
+        field: null,
+        title: "تاریخ ساخت",
+        elements: (rowData) => convertToDateToJalali(rowData.created_at),
+      },
+    ];
 
-  const additionalField = [
-    {
-      title: "نمایش در منو",
-      elements: (rowData) => <ShowInMenue rowData={rowData} />,
-    },
-    {
-      title: "وضعیت",
-      elements: (rowData) => <IsActive rowData={rowData} />,
-    },
-    {
-      title: "تاریخ ساخت",
-      elements: (rowData) => convertToDateToJalali(rowData.created_at),
-    },
-    {
-      title: "عملیات",
-      elements: (rowData) => (
-        <Actions rowData={rowData} handleDelete={deleteCategory} />
-      ),
-    },
-  ];
+    if (hasActionPerm) {
+      basicColumns.push({
+        field: null,
+        title: "عملیات",
+        elements: (rowData) => (
+          <Actions rowData={rowData} handleDelete={deleteCategory} />
+        ),
+      });
+    }
+
+    return basicColumns;
+  }, [hasActionPerm, deleteCategory]);
 
   const handleOnSuccess = () => {
     refetch();
@@ -65,7 +79,6 @@ const CategoryTable = () => {
         title="مدیریت دسته بندی محصول"
         data={data}
         dataInfo={dataInfo}
-        additionalField={additionalField}
         limit={5}
         isLoading={loading}
         error={error}

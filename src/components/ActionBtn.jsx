@@ -9,6 +9,7 @@ const ActionBtn = ({ icon, onClick, color, iconColor, actionTitle, pTitle }) => 
     blue: "bg-blue-500/30 hover:bg-blue-500",
     green: "bg-green-500/30 hover:bg-green-500",
     amber: "bg-amber-500/30 hover:bg-amber-500",
+    amberNoHover: "bg-amber-500",
     sky: "bg-sky-500/30 hover:bg-sky-500",
   }[color];
 

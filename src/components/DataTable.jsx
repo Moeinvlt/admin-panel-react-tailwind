@@ -10,7 +10,6 @@ import PrevPageBtn from "./PrevPageBtn";
 const DataTable = ({
   data,
   dataInfo,
-  additionalField,
   limit = 5,
   title,
   isLoading,
@@ -49,20 +48,17 @@ const DataTable = ({
   const visiblePages = useMemo(() => {
     if (totalPages <= 1) return [];
 
-    const maxVisible = 3// حداکثر تعداد دکمه‌های میانی
+    const maxVisible = 3; // حداکثر تعداد دکمه‌های میانی
     const pages = [];
 
     if (totalPages <= maxVisible + 2) {
-      // اگر تعداد کل صفحات کم است، همه را نشان بده
       for (let i = 1; i <= totalPages; i++) pages.push(i);
     } else {
-      // همیشه صفحه اول
       pages.push(1);
 
       let start = Math.max(2, currentPage - Math.floor(maxVisible / 2));
       let end = Math.min(totalPages - 1, start + maxVisible - 1);
 
-      // تنظیم مجدد اگر به انتها نزدیک شدیم
       if (end === totalPages - 1) start = Math.max(2, end - maxVisible + 1);
       else if (start === 2)
         end = Math.min(totalPages - 1, start + maxVisible - 1);
@@ -71,11 +67,9 @@ const DataTable = ({
       for (let i = start; i <= end; i++) pages.push(i);
       if (end < totalPages - 1) pages.push("...");
 
-      // صفحه آخر
       pages.push(totalPages);
     }
 
-    // حذف مقادیر تکراری (در صورت بروز)
     return pages.filter((v, i, a) => a.indexOf(v) === i);
   }, [totalPages, currentPage]);
 
@@ -159,21 +153,11 @@ const DataTable = ({
             <table className="w-full text-sm text-nowrap min-w-175">
               <thead>
                 <tr>
-                  {dataInfo.map((i) => (
-                    <th key={i.field} className="py-3 px-2 defaultText">
+                  {dataInfo.map((i, index) => (
+                    <th key={`header-${index}`} className="py-3 px-2 defaultText">
                       {i.title}
                     </th>
                   ))}
-
-                  {Array.isArray(additionalField) &&
-                    additionalField.map((a, index) => (
-                      <th
-                        key={`add-col-${index}`}
-                        className="py-3 px-2 defaultText"
-                      >
-                        {a.title}
-                      </th>
-                    ))}
                 </tr>
               </thead>
 
@@ -183,24 +167,23 @@ const DataTable = ({
                     key={d.id}
                     className="border-t border-border-light dark:border-border-dark hover:bg-gray-300/60 hover:dark:bg-gray-900/80"
                   >
-                    {dataInfo.map((i) => (
-                      <td
-                        key={i.field + "_" + d.id}
-                        className="py-3 px-2 defaultText text-center"
-                      >
-                        {d[i.field]}
-                      </td>
-                    ))}
-
-                    {Array.isArray(additionalField) &&
-                      additionalField.map((a, index) => (
+                    {dataInfo.map((i, index) =>
+                      i.field ? (
                         <td
-                          key={`add-cell-${index}-${d.id}`}
+                          key={i.field + "_" + d.id}
                           className="py-3 px-2 defaultText text-center"
                         >
-                          {a.elements(d)}
+                          {d[i.field]}
                         </td>
-                      ))}
+                      ) : (
+                        <td
+                          key={d.id + "__" + i.id + "__" + index}
+                          className="py-3 px-2 defaultText text-center"
+                        >
+                          {i.elements(d)}
+                        </td>
+                      ),
+                    )}
                   </tr>
                 ))}
               </tbody>
