@@ -24,14 +24,15 @@ import Users from "../../../pages/users/Users";
 import AddUser from "../../../pages/users/components/AddUser";
 import { useHasPermission } from "../../../hooks/permissionsHook";
 import PermComponent from "../../../components/PermComponent";
+import Deliveries from "../../../pages/deliveries/Deliveries";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
 
   const hasCategoryPermission = useHasPermission("read_categories");
-  const hasDiscountsPermission = useHasPermission("read_discounts")
-  const hasUserPermission = useHasPermission("read_users")
-  const hasRolesPermission = useHasPermission("read_roles")
+  const hasDiscountsPermission = useHasPermission("read_discounts");
+  const hasUserPermission = useHasPermission("read_users");
+  const hasRolesPermission = useHasPermission("read_roles");
 
   return (
     <main
@@ -48,15 +49,64 @@ const Content = () => {
         )}
         <Route
           path="/categories/:categoryId/attributes"
-          element={<PermComponent component={<AddAttributes/>} pTitle="read_category_attrs"/>}
+          element={
+            <PermComponent
+              component={<AddAttributes />}
+              pTitle="read_category_attrs"
+            />
+          }
         />
-        <Route path="/product" element={<PermComponent component={<Product/>} pTitle="read_products"/>}/>
-        <Route path="/products/add-product" element={<PermComponent component={<AddProduct/>} pTitle="create_product"/>}/>
-        <Route path="/products/set-attr" element={<PermComponent component={<SetProductAttr/>} pTitle="create_product_attr"/>}/>
-        <Route path="/products/gallery" element={<PermComponent component={<ProductGallery/>} pTitle="create_product_image"/>}/>
-        <Route path="/brands" element={<PermComponent component={<Brands/>} pTitle="read_brands"/>}/>
-        <Route path="/guarantees" element={<PermComponent component={<Guarantees/>} pTitle="read_guarantees"/>}/>
-        <Route path="/colors" element={<PermComponent component={<Colors/>} pTitle="read_colors"/>}/>
+        <Route
+          path="/product"
+          element={
+            <PermComponent component={<Product />} pTitle="read_products" />
+          }
+        />
+        <Route
+          path="/products/add-product"
+          element={
+            <PermComponent component={<AddProduct />} pTitle="create_product" />
+          }
+        />
+        <Route
+          path="/products/set-attr"
+          element={
+            <PermComponent
+              component={<SetProductAttr />}
+              pTitle="create_product_attr"
+            />
+          }
+        />
+        <Route
+          path="/products/gallery"
+          element={
+            <PermComponent
+              component={<ProductGallery />}
+              pTitle="create_product_image"
+            />
+          }
+        />
+        <Route
+          path="/brands"
+          element={
+            <PermComponent component={<Brands />} pTitle="read_brands" />
+          }
+        />
+        <Route
+          path="/guarantees"
+          element={
+            <PermComponent
+              component={<Guarantees />}
+              pTitle="read_guarantees"
+            />
+          }
+        />
+        <Route
+          path="/colors"
+          element={
+            <PermComponent component={<Colors />} pTitle="read_colors" />
+          }
+        />
 
         {hasDiscountsPermission && (
           <Route path="/discounts" element={<Discounts />}>
@@ -76,9 +126,19 @@ const Content = () => {
           </Route>
         )}
 
-        <Route path="/permissions" element={<PermComponent component={<Permissions/>} pTitle="read_permissions" />} />
+        <Route
+          path="/permissions"
+          element={
+            <PermComponent
+              component={<Permissions />}
+              pTitle="read_permissions"
+            />
+          }
+        />
 
         <Route path="/carts" element={<Carts />} />
+
+        <Route path="/deliveries" element={<PermComponent component={<Deliveries/>} pTitle="read_deliveries" />} />
 
         <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Navigate to="/404" replace />} />

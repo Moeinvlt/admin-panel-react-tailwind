@@ -74,7 +74,7 @@ const Sidebar = () => {
 
           <SidebarItem title="مدیریت سفارشات" path="/" icon={<FaLuggageCart />} pTitle="read_orders" />
 
-          <SidebarItem title="مدیریت نحوه ارسال" path="/" icon={<FaTruckLoading />} pTitle="read_deliveries" />
+          <SidebarItem title="مدیریت نحوه ارسال" path="/deliveries" icon={<FaTruckLoading />} pTitle="read_deliveries" />
 
           {/* tlte */}
           <SidebarGroupTitle title="کاربران و همکاران" pTitles={["read_users",  "read_roles",  "read_permissions"]} />
