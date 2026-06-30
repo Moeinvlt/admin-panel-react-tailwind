@@ -25,12 +25,14 @@ import AddUser from "../../../pages/users/components/AddUser";
 import { useHasPermission } from "../../../hooks/permissionsHook";
 import PermComponent from "../../../components/PermComponent";
 import Deliveries from "../../../pages/deliveries/Deliveries";
+import AddCart from "../../../pages/carts/components/AddCart";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
 
   const hasCategoryPermission = useHasPermission("read_categories");
   const hasDiscountsPermission = useHasPermission("read_discounts");
+  const hasCartsPermission = useHasPermission("read_carts");
   const hasUserPermission = useHasPermission("read_users");
   const hasRolesPermission = useHasPermission("read_roles");
 
@@ -136,9 +138,21 @@ const Content = () => {
           }
         />
 
-        <Route path="/carts" element={<Carts />} />
+        {hasCartsPermission && (
+          <Route path="/carts" element={<Carts />}>
+            <Route path="add-cart" element={<AddCart />} />
+          </Route>
+        )}
 
-        <Route path="/deliveries" element={<PermComponent component={<Deliveries/>} pTitle="read_deliveries" />} />
+        <Route
+          path="/deliveries"
+          element={
+            <PermComponent
+              component={<Deliveries />}
+              pTitle="read_deliveries"
+            />
+          }
+        />
 
         <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Navigate to="/404" replace />} />

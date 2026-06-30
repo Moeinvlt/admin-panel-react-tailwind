@@ -11,6 +11,10 @@ export const createCartApi = (data) => {
   return httpService("/admin/carts", "post", data);
 };
 
+export const getSinglrCartApi = (cartId) => {
+  return httpService(`/admin/carts/${cartId}`, "get");
+};
+
 export const editCartApi = (cartId, data) => {
   return httpService(`/admin/carts/${cartId}`, "put", data);
 };

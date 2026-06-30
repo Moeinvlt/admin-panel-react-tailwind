@@ -4,7 +4,7 @@ import { AdminContext } from "../context/AdminContextContainer";
 import { HiX } from "react-icons/hi";
 import { CategoryContext } from "../context/CategoryContext";
 
-const Modal = ({ children, fullScreen=true, title, customCloseFnc }) => {
+const Modal = ({ children, fullScreen=true, title, customCloseFnc, containerWidth }) => {
   const { modalOpen, setModalOpen } = useContext(AdminContext);
   const { setEditId } = useContext(CategoryContext);
 
@@ -41,7 +41,7 @@ const Modal = ({ children, fullScreen=true, title, customCloseFnc }) => {
         </div>
 
         <div className="h-full px-6 overflow-y-auto custom-scroll">
-          <div className="mx-auto max-w-[429.13px]">
+          <div className={`mx-auto ${containerWidth ? containerWidth : "max-w-[429.13px]"}`}>
             {children}
           </div>
         </div>

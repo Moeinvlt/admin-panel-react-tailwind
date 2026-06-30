@@ -20,3 +20,7 @@ export const deleteProductApi = (productId)=>{
 export const getProductTitlesApi = () => {
   return httpService(`/admin/products/all_titles`, "get");
 };
+
+export const getOneProductApi= (productId)=>{
+  return httpService(`/admin/products/${productId}`, "get");
+}

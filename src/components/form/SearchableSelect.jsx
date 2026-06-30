@@ -12,6 +12,7 @@ const SearchableSelect = ({
   firstItem = "انتخاب کنید...",
   className = "",
   initialItems,
+  onChange, // ← اضافه شد (اختیاری)
 }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -20,32 +21,43 @@ const SearchableSelect = ({
   const formik = useFormikContext();
 
   // فیلتر گزینه‌ها بر اساس جستجو
-const filteredOptions = (options || []).filter((opt) =>
-  opt.value.toLowerCase().includes(searchTerm.toLowerCase())
-);
+  const filteredOptions = (options || []).filter((opt) =>
+    opt.value.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   // مقداردهی اولیه از فرمیک (برای ویرایش)
-  useEffect(() => {
-    const fieldValue = formik.values[name];
-    if (!fieldValue) {
-      setSelectedItems([]);
-      return;
-    }
-    let ids = [];
-    if (resultType === "string" && typeof fieldValue === "string") {
-      ids = fieldValue.split("-").map(Number).filter(Boolean);
-    } else if (Array.isArray(fieldValue)) {
-      ids = fieldValue;
-    }
-    const initialSelected = options.filter((opt) => ids.includes(opt.id));
-    setSelectedItems(initialSelected);
-  }, [formik.values, name, options, resultType]);
-
 useEffect(() => {
-  if (initialItems && Array.isArray(initialItems)) {
-    setSelectedItems(initialItems);
+  const fieldValue = formik.values[name];
+  if (!fieldValue && fieldValue !== 0) {
+    setSelectedItems([]);
+    return;
   }
-}, [initialItems]);
+  let ids = [];
+  if (resultType === "string") {
+    // تبدیل به رشته برای پشتیبانی از اعداد و رشته‌های با خط تیره
+    const strValue = String(fieldValue);
+    ids = strValue.split("-").map(Number).filter(Boolean);
+  } else if (Array.isArray(fieldValue)) {
+    ids = fieldValue;
+  }
+  const initialSelected = options.filter((opt) => ids.includes(opt.id));
+  setSelectedItems(initialSelected);
+}, [formik.values, name, options, resultType]);
+
+  // مقداردهی از initialItems (برای ویرایش با داده‌های خارجی)
+  useEffect(() => {
+    if (
+      initialItems &&
+      Array.isArray(initialItems) &&
+      initialItems.length > 0
+    ) {
+      setSelectedItems(initialItems);
+      // ✅ اگر onChange وجود داشت و یک آیتم اولیه وجود دارد، آن را صدا بزن
+      if (onChange && initialItems.length > 0) {
+        onChange(initialItems[0]?.id);
+      }
+    }
+  }, [initialItems, onChange]);
 
   // بستن لیست با کلیک بیرون
   useEffect(() => {
@@ -75,6 +87,11 @@ useEffect(() => {
       setSelectedItems(newItems);
       updateFormValue(newItems);
       setSearchTerm("");
+
+      // ✅ اگر onChange وجود داشت، آن را با id آیتم انتخاب شده صدا بزن
+      if (onChange) {
+        onChange(itemId);
+      }
     }
   };
 
@@ -86,7 +103,7 @@ useEffect(() => {
 
   return (
     <div className={`w-full max-w-130 mt-5 ${className}`} ref={wrapperRef}>
-      {/* باکس اصلی (فقط جایگاه نمایش placeholder و کلیک برای باز کردن لیست) */}
+      {/* باکس اصلی */}
       <div className="customBox flex w-full">
         <span className="bg-sky-400/20 text-sky-400 w-27 flex items-center justify-center">
           {label}
@@ -103,7 +120,7 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* چیپ‌ها - زیر باکس اصلی */}
+      {/* چیپ‌ها */}
       {selectedItems.length > 0 && (
         <div className="max-w-103 flex flex-wrap gap-2 mt-2">
           {selectedItems.map((item) => (
@@ -124,11 +141,10 @@ useEffect(() => {
         </div>
       )}
 
-      {/* لیست کشویی با جستجو */}
+      {/* لیست کشویی */}
       {isOpen && (
         <div className="relative">
           <div className="absolute top-0 left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-20">
-            {/* جستجو */}
             <div className="p-2 border-b border-gray-200 dark:border-gray-700">
               <div className="relative">
                 <input
@@ -143,7 +159,6 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* گزینه‌ها */}
             <div className="max-h-60 overflow-y-auto">
               {filteredOptions.length === 0 ? (
                 <div className="p-2 text-red-400 text-center">
@@ -156,7 +171,7 @@ useEffect(() => {
                     className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer defaultText"
                     onClick={() => {
                       handleSelectItem(opt.id);
-                      setIsOpen(false); // بعد از انتخاب بسته شود
+                      setIsOpen(false);
                       setSearchTerm("");
                     }}
                   >

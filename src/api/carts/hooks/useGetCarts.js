@@ -8,7 +8,7 @@ export const useGetCarts = () => {
   const [error, setError] = useState(null);
   const [searchChar, setSearchChar] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [countOnPage, setCountOnPage] = useState(10);
+  const [countOnPage, setCountOnPage] = useState(100);
   const [pageCount, setPageCount] = useState(0);
 
   const fetchCarts = async (
