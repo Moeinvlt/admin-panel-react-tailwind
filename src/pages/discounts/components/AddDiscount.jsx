@@ -37,17 +37,21 @@ const AddDiscount = ({ onClose, setDiscountsData }) => {
       .map((id) => allProducts.filter((p) => p.id == id)[0])
       .filter((product) => product);
     return (
-      <FormikControl
-        label="برای"
-        control="searchableSelect"
-        options={allProducts}
-        name="product_ids"
-        firstItem="محصول مورد نظر را انتخاب کنبد..."
-        resultType="string"
-        initialItems={
-          selectedProductArr.length > 0 ? selectedProductArr : selectedProducts
-        }
-      />
+      <div className="animate__animated animate__shakeX">
+        <FormikControl
+          label="برای"
+          control="searchableSelect"
+          options={allProducts}
+          name="product_ids"
+          firstItem="محصول مورد نظر را انتخاب کنبد..."
+          resultType="string"
+          initialItems={
+            selectedProductArr.length > 0
+              ? selectedProductArr
+              : selectedProducts
+          }
+        />
+      </div>
     );
   };
 

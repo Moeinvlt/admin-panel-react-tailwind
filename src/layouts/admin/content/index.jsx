@@ -26,6 +26,8 @@ import { useHasPermission } from "../../../hooks/permissionsHook";
 import PermComponent from "../../../components/PermComponent";
 import Deliveries from "../../../pages/deliveries/Deliveries";
 import AddCart from "../../../pages/carts/components/AddCart";
+import Orders from "../../../pages/orders/Orders";
+import AddOrder from "../../../pages/orders/components/AddOrder";
 
 const Content = () => {
   const { sidebarOpen } = useContext(AdminContext);
@@ -35,6 +37,7 @@ const Content = () => {
   const hasCartsPermission = useHasPermission("read_carts");
   const hasUserPermission = useHasPermission("read_users");
   const hasRolesPermission = useHasPermission("read_roles");
+  const hasOrdersPermission = useHasPermission("read_order");
 
   return (
     <main
@@ -141,6 +144,12 @@ const Content = () => {
         {hasCartsPermission && (
           <Route path="/carts" element={<Carts />}>
             <Route path="add-cart" element={<AddCart />} />
+          </Route>
+        )}
+
+        {hasOrdersPermission && (
+          <Route path="/orders" element={<Orders />}>
+            <Route path="add-order" element={<AddOrder />} />
           </Route>
         )}
 

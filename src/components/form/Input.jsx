@@ -1,7 +1,7 @@
 import { ErrorMessage, FastField } from "formik";
 import FormErrorMessage from "./FormErrorMessage";
 
-const Input = ({ type, name, label, placeholder }) => {
+const Input = ({ type, name, label, placeholder, ...others }) => {
   return (
     <>
       <div className="customBox flex w-full max-w-130 mt-5">
@@ -13,6 +13,7 @@ const Input = ({ type, name, label, placeholder }) => {
           name={name}
           className="w-full defaultText p-2 outline-none"
           placeholder={placeholder}
+          {...others}
         />
       </div>
 

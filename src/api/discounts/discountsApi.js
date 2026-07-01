@@ -8,6 +8,11 @@ export const createDiscountApi = (data) => {
     return httpService('/admin/discounts', 'post', data)
 }
 
+export const getOneDiscountApi = (discountId) => {
+  return httpService(`/admin/discounts/${discountId}`, "get");
+};
+
+
 export const deleteDiscountApi = (discountId)=>{
   return httpService(`/admin/discounts/${discountId}`, 'delete')
 }

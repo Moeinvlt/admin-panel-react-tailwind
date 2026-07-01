@@ -72,7 +72,7 @@ const Sidebar = () => {
 
           <SidebarItem title="مدیریت سبد ها" path="/carts" icon={<FaShoppingBasket />} pTitle="read_carts" />
 
-          <SidebarItem title="مدیریت سفارشات" path="/" icon={<FaLuggageCart />} pTitle="read_orders" />
+          <SidebarItem title="مدیریت سفارشات" path="/orders" icon={<FaLuggageCart />} pTitle="read_orders" />
 
           <SidebarItem title="مدیریت نحوه ارسال" path="/deliveries" icon={<FaTruckLoading />} pTitle="read_deliveries" />
 

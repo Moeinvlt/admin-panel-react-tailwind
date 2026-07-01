@@ -15,11 +15,13 @@ const Modal = ({ children, fullScreen=true, title, customCloseFnc, containerWidt
 
   return createPortal(
     <div
-      className={`w-full h-screen fixed top-0 z-100 transition-all duration-150 
+      className={`w-full h-screen fixed top-0 z-100 transition-all duration-150 animate__animated animate__faster
       ${modalOpen
-          ? "opacity-100 visible "
-          : "opacity-0 invisible -translate-y-8"
+          ? "opacity-100 visible animate__fadeInDown"
+          : "opacity-0 invisible "
         }
+
+        ${!modalOpen ? "animate__fadeOutUp" : ""}
 
         ${!fullScreen
           ? "bg-gray-900/70 flex justify-center items-center"
